@@ -1,0 +1,161 @@
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {useState} from 'react'
+import { auth } from "../firebase"
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Add this line
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Add this line
+
+
+const LoginScreen = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // sign up
+    const clickSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredentials) => {
+            const user = userCredentials.user;
+            console.log("new user: " +user.email);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            let errorMessage;
+      
+            switch (errorCode) {
+              case 'auth/email-already-in-use':
+                errorMessage = 'The email address is already in use.';
+                break;
+              case 'auth/invalid-email':
+                errorMessage = 'The email address is not valid.';
+                break;
+              case 'auth/weak-password':
+                errorMessage = 'The password is too weak.';
+                break;
+              default:
+                errorMessage = error.message;
+            }
+      
+            alert(errorMessage);
+          });
+      };
+    
+      //sign in
+      const clickSignin = () => {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredentials) => {
+            const user = userCredentials.user;
+            console.log('logged in user: ' + user.email);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            let errorMessage;
+            
+            switch (errorCode) {
+              case 'auth/invalid-email':
+                errorMessage = 'Not a valid email';
+                break;
+              case 'auth/user-disabled':
+                errorMessage = 'This account has been deactivated';
+                break;
+              case 'auth/user-not-found':
+                errorMessage = 'This email is not registered, please click on "Sign up';
+                break;
+              case 'auth/wrong-password':
+                errorMessage = 'Incorrect password';
+                break;
+              default:
+                errorMessage = error.message;
+            }
+      
+            alert(errorMessage);
+          });
+      };
+      
+    
+
+    return (
+        <KeyboardAvoidingView
+        style={styles.container}
+        behavior='padding'
+        >
+            <View style={styles.inputContainer}>
+                <TextInput
+                    placeholder='Email'
+                    value = {email}
+                    onChangeText={text => setEmail(text)}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Password'
+                    value = {password}
+                    onChangeText={text => setPassword(text)}
+                    style={styles.input}
+                    secureTextEntry={true}
+                />
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    onPress={clickSignin}
+                    style={styles.button}
+                >
+                    <Text style={styles.buttonText}>Sign in</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={clickSignUp}
+                    style={[styles.button, styles.buttonOutline]}
+                >
+                    <Text style={styles.buttonOutlineText}>Sign up</Text>
+                </TouchableOpacity>
+            </View>
+        </KeyboardAvoidingView>
+    )
+}
+
+export default LoginScreen
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    inputContainer: {
+        width: '80%'
+    },
+    input: {
+        backgroundColor: 'white',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 15,
+        marginTop: 10,
+    },
+    buttonContainer: {
+        width: '60%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+    },
+    button: {
+        backgroundColor: '#FFD600',
+        width: '100%',
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    buttonOutline: {
+        backgroundColor: '#F6F6F6',
+        marginTop: 5,
+        borderColor: '#FFD600',
+        borderWidth: 2,
+    },
+    buttonText: {
+       color: 'black',
+       fontWeight: '700',
+       fontSize: 16,
+    },
+    buttonOutlineText: {
+        color: 'black',
+        fontWeight: '700',
+        fontSize: 16,
+    },
+    
+})
