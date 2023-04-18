@@ -2,10 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+import HomeScreen from './screens/HomeScreen/HomeScreen';
 
-// colors from: https://colordesigner.io/?presentationMode=true#FFD600-A5DC7E-B57EDC-D8D2DD-1c1d21
+// colors from: https://colordesigner.io/#FFD600-3C691C-ff6d1f-D8D2DD-1c1d21
 
 const Stack = createNativeStackNavigator();
 

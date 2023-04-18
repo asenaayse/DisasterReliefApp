@@ -1,77 +1,12 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, {useState} from 'react'
-import { auth } from "../firebase"
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Add this line
-import { signInWithEmailAndPassword } from 'firebase/auth'; // Add this line
+import { auth } from "../../firebase"
+import { createUserWithEmailAndPassword } from 'firebase/auth'; 
+import { signInWithEmailAndPassword } from 'firebase/auth'; 
 
 
-const LoginScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    // sign up
-    const clickSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredentials) => {
-            const user = userCredentials.user;
-            console.log("new user: " +user.email);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            let errorMessage;
-      
-            switch (errorCode) {
-              case 'auth/email-already-in-use':
-                errorMessage = 'The email address is already in use.';
-                break;
-              case 'auth/invalid-email':
-                errorMessage = 'The email address is not valid.';
-                break;
-              case 'auth/weak-password':
-                errorMessage = 'The password is too weak.';
-                break;
-              default:
-                errorMessage = error.message;
-            }
-      
-            alert(errorMessage);
-          });
-      };
+const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, clickSignin}) => {
     
-      //sign in
-      const clickSignin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredentials) => {
-            const user = userCredentials.user;
-            console.log('logged in user: ' + user.email);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            let errorMessage;
-            
-            switch (errorCode) {
-              case 'auth/invalid-email':
-                errorMessage = 'Not a valid email';
-                break;
-              case 'auth/user-disabled':
-                errorMessage = 'This account has been deactivated';
-                break;
-              case 'auth/user-not-found':
-                errorMessage = 'This email is not registered, please click on "Sign up';
-                break;
-              case 'auth/wrong-password':
-                errorMessage = 'Incorrect password';
-                break;
-              default:
-                errorMessage = error.message;
-            }
-      
-            alert(errorMessage);
-          });
-      };
-      
-    
-
     return (
         <KeyboardAvoidingView
         style={styles.container}
@@ -110,7 +45,7 @@ const LoginScreen = () => {
     )
 }
 
-export default LoginScreen
+export default LoginScreenUI
 
 const styles = StyleSheet.create({
     container: {
