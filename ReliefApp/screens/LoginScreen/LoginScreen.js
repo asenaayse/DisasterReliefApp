@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/core';
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState(''); // New state for username
     const navigation = useNavigation()
 
     // sign up
@@ -91,7 +92,9 @@ const LoginScreen = () => {
       <LoginScreenUI 
       email = {email}
       password = {password}
+      username={username} // Pass the username state as a prop
       setEmail = {setEmail}
+      setUsername={setUsername} // Pass the setUsername function as a prop
       setPassword = {setPassword}
       clickSignUp = {clickSignUp}
       clickSignin = {clickSignin}
