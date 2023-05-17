@@ -3,7 +3,7 @@ import Form from './Form'
 import React, {useState} from 'react'
 
 
-const HomeScreenUI = ({auth, clickSignOut}) => {
+const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   
   const [formType, setFormType] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -33,6 +33,16 @@ const HomeScreenUI = ({auth, clickSignOut}) => {
       >
         <Text style = {styles.buttonText}>I want to donate something...</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Map');
+  }}
+>
+  <Text style = {styles.buttonText}>Go to Map</Text>
+</TouchableOpacity>
+
       
       {/* will make overlay later */}
       <Modal

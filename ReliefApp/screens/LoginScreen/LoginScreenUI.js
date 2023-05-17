@@ -5,17 +5,14 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth'; 
 
 
-const LoginScreenUI = ({email, setEmail, password, setPassword, username, setUsername, clickSignUp, clickSignin}) => {
+const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, clickSignin}) => {
     
     return (
-        <KeyboardAvoidingView style={styles.container} behavior='padding'>
+        <KeyboardAvoidingView
+        style={styles.container}
+        behavior='padding'
+        >
             <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder='Username'
-                    value={username}
-                    onChangeText={text => setUsername(text)} // Update the username state when input changes
-                    style={styles.input}
-                />
                 <TextInput
                     placeholder='Email'
                     value = {email}

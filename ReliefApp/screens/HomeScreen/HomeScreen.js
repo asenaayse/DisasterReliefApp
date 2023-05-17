@@ -19,10 +19,11 @@ const HomeScreen = () => {
     <HomeScreenUI
     auth = {auth}
     clickSignOut = {clickSignOut}
+    navigation={navigation}
     />
     
   )
 }
-//test2
+
 export default HomeScreen
 
