@@ -7,8 +7,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523
+  lat: 41.032064,
+  lng: 29.258676
 };
 
 const GoogleMapsScreenUI = () => {
