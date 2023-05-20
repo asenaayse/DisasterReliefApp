@@ -8,8 +8,8 @@ const GoogleMapsScreenUI = () => {
       <MapView
         style={{ flex: 1 }}
         initialRegion={{
-          latitude: -3.745,
-          longitude: -38.523,
+          latitude: 41.032064,
+          longitude: 29.258676,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
