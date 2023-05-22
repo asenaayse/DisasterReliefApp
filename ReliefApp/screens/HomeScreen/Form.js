@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { db } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
+
+const deviceWidth = Dimensions.get('window').width;
 
 const categories = {
   medical: ['painkiller', 'bandage'],
@@ -91,10 +93,11 @@ const Form = ({ formType , closeModal}) => {
   };
 
   return (
-    <View>
+    <View style={styles.formStyle}>
       {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
       <Text>Category:</Text>
       <Picker
+        style={styles.input}
         selectedValue={category}
         onValueChange={(itemValue) => {
           setCategory(itemValue);
@@ -110,6 +113,7 @@ const Form = ({ formType , closeModal}) => {
         <>
           <Text>Subcategory:</Text>
           <Picker
+          style={styles.input}
             selectedValue={subCategory}
             onValueChange={(itemValue) => setSubCategory(itemValue)}
           >
@@ -156,13 +160,19 @@ const Form = ({ formType , closeModal}) => {
 export default Form;
 
 const styles = StyleSheet.create({
+    formStyle: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+
+    },
     input: {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
       padding: 10,
       marginBottom: 15,
-      width: '100%',
+      width: deviceWidth > 800 ? 250 : '60%',
     },
     submitButton: {
       backgroundColor: '#f84242',
@@ -171,6 +181,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop: 15,
       borderColor: 'black',
+      width: deviceWidth > 800 ? 250 : '60%',
     },
     submitButtonText: {
       color: 'black',
@@ -178,15 +189,16 @@ const styles = StyleSheet.create({
       fontSize: 16,
     },
     closeButton: {
-        backgroundColor: 'red',
+        backgroundColor: '#f84242',
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
         marginTop: 15,
         borderColor: 'black',
+        width: deviceWidth > 800 ? 250 : '60%',
       },
       closeButtonText: {
-        color: 'white',
+        color: 'black',
         fontWeight: '700',
         fontSize: 16,
       },

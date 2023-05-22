@@ -1,7 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions } from 'react-native';
 import Form from './Form'
 import React, {useState} from 'react'
+import { FontAwesome5 } from '@expo/vector-icons'; // https://icons.expo.fyi/ 
 
+const deviceWidth = Dimensions.get('window').width;
 
 const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   
@@ -10,7 +12,11 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
 
 
   return (
+
     <View style={styles.container}>
+
+      <FontAwesome5 name="hands-helping" size={100} color="#f84242" />
+
       <Text>Welcome {auth.currentUser?.email} </Text>
 
       <TouchableOpacity
@@ -31,7 +37,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
           setIsModalVisible(true);
         }}
       >
-        <Text style = {styles.buttonText}>I want to donate something...</Text>
+        <Text style = {styles.buttonText}>I want to donate...</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -47,11 +53,15 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
       {/* will make overlay later */}
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+              <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+          </View>
+      </View>
       </Modal>
 
 
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#f84242',
@@ -84,7 +94,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 15,
-    borderColor: 'black'
+    borderColor: 'black',
+    width: deviceWidth > 800 ? 250 : '60%',
   },
   buttonText: {
     color: 'black',
@@ -95,10 +106,35 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
+    width: deviceWidth > 800 ? 250 : '60%',
   },
   signOutButtonText: {
     textDecorationLine: 'underline',
     color: 'black', 
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+},
+modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: deviceWidth * 0.5, 
+    height: '80%',
+},
+
 
 })
