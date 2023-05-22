@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import { auth } from "../../firebase"
 import { createUserWithEmailAndPassword } from 'firebase/auth'; 
 import { signInWithEmailAndPassword } from 'firebase/auth'; 
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, clickSignin}) => {
@@ -12,6 +13,8 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
         style={styles.container}
         behavior='padding'
         >
+            <MaterialIcons name="person" size={180} color="#f84242" style={styles.icon} />
+      
             <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='Email'
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
     button: {
-        backgroundColor: '#FFD600',
+        backgroundColor: '#f84242',
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
     buttonOutline: {
         backgroundColor: '#F6F6F6',
         marginTop: 5,
-        borderColor: '#FFD600',
+        borderColor: '#f84242',
         borderWidth: 2,
     },
     buttonText: {
@@ -92,5 +95,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
     },
+    icon: {
+        marginBottom: 20,
+      },
     
 })

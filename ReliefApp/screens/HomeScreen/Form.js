@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { db } from '../../firebase';
@@ -11,21 +11,75 @@ const categories = {
   nutrition: ['food', 'water'],
 };
 
+const categoryInformation = {
+  medical: {
+    painkiller: {maxAmount: 1, unit: "packet"},
+    bandage: {maxAmount: 2, unit: "rolls"},
+  },
+  heating: {
+    blanket: {maxAmount: 3, unit:"blanket(s)"},
+    electric_heater: {maxAmount: 1, unit:"heater(s)"},
+  },
+  shelter: {
+    tent: {maxAmount: 1, unit:"tent(s)"},
+    container: {maxAmount: 1, unit:"container(s)"},
+  },
+  nutrition: {
+    food: {maxAmount: 4, unit: "per_person"},
+    water: {maxAmount: 4, unit: "2L_bottle(s)"}
+  },
+};
+
 const Form = ({ formType , closeModal}) => {
+  let formFormtype = formType;
   const [category, setCategory] = useState('');
-  const [subCategory, setSubCategory] = useState('');
+  const [subCategory, setSubCategory] = useState(''); 
   const [amount, setAmount] = useState('');
   const [location, setLocation] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
+  const [error, setError] = useState('');
+
 
   const handleSubmit = async () => {
+    
+    // fill all fields
+    if (!category || !subCategory || !amount || !location) {
+      setError('All fields must be filled!');
+      return;
+    }
+    // amount should be an integer
+    const parsedAmount = parseInt(amount);
+
+    if (!Number.isInteger(parsedAmount)) {
+      setError('Amount must be an integer.');
+      return;
+    }
+    // validate the amount
+    const maxAmount = categoryInformation[category][subCategory].maxAmount;
+    const unit = categoryInformation[category][subCategory].unit;
+  
+    if (formFormtype == "needs" && parseInt(amount) > maxAmount) {
+      setError(`You can request at most ${maxAmount} ${unit} of ${subCategory}.`);
+      return ;
+    } else {
+      setError('');
+    }
+    
+
+    // use local variables so that we can get the most recent value
+    let formCategory = category;
+    let formSubCategory = subCategory;
+    let formAmount = amount;
+    let formLocation = location;
+    let formExpirationDate = expirationDate;
+
     try {
         const docRef = await addDoc(collection(db, formType), {
-        category,
-        subCategory,
-        amount,
-        location,
-        expirationDate,
+        formCategory,
+        formSubCategory,
+        formAmount,
+        formLocation,
+        formExpirationDate,
       });
       Alert.alert('Success', 'Your request has been submitted!');
       console.log('Document written with ID: ', docRef.id);
@@ -38,6 +92,7 @@ const Form = ({ formType , closeModal}) => {
 
   return (
     <View>
+      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
       <Text>Category:</Text>
       <Picker
         selectedValue={category}
@@ -94,11 +149,8 @@ const Form = ({ formType , closeModal}) => {
 
     
     </View>
-
-
-
-
   )
+      
 }
 
 export default Form;
@@ -113,7 +165,7 @@ const styles = StyleSheet.create({
       width: '100%',
     },
     submitButton: {
-      backgroundColor: '#FFD600',
+      backgroundColor: '#f84242',
       padding: 10,
       borderRadius: 5,
       alignItems: 'center',
