@@ -1,5 +1,5 @@
-import React from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import React, {useCallback, useEffect, useState} from 'react';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -12,6 +12,19 @@ const center = {
 };
 
 const GoogleMapsScreenUI = () => {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const handleMapClick = useCallback((event) => {
+    setSelectedLocation({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    });
+  }, []);
+
+  useEffect(()=>{
+    console.log('selected location is:', selectedLocation)
+  }, [selectedLocation]);
+
+
   return (
     <LoadScript googleMapsApiKey="AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c
     ">
@@ -19,8 +32,9 @@ const GoogleMapsScreenUI = () => {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={10}
+        onClick={handleMapClick}
       >
-        <></>
+        {selectedLocation && <Marker position={selectedLocation}/>}
       </GoogleMap>
     </LoadScript>
   );
