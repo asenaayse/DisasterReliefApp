@@ -1,143 +1,235 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { db } from '../../firebase';
-import { addDoc, collection } from "firebase/firestore";
+import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions } from 'react-native';
+import Form from './Form'
+import React, {useState} from 'react'
+import { FontAwesome5 } from '@expo/vector-icons'; // https://icons.expo.fyi/ 
 
-const categories = {
-  medical: ['painkiller', 'bandage'],
-  heating: ['blanket', 'electric_heater'],
-  shelter: ['tent', 'container'],
-  nutrition: ['food', 'water'],
-};
+const deviceWidth = Dimensions.get('window').width;
 
-const Form = ({ formType , closeModal}) => {
-  const [category, setCategory] = useState('');
-  const [subCategory, setSubCategory] = useState('');
-  const [amount, setAmount] = useState('');
-  const [location, setLocation] = useState('');
-  const [expirationDate, setExpirationDate] = useState('');
+const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
+  
+  const [formType, setFormType] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleSubmit = async () => {
-    try {
-        const docRef = await addDoc(collection(db, formType), {
-        category,
-        subCategory,
-        amount,
-        location,
-        expirationDate,
-      });
-      Alert.alert('Success', 'Your request has been submitted!');
-      console.log('Document written with ID: ', docRef.id);
-      closeModal();
-    } catch (error) {
-      console.error('Error adding document: ', error);
-      Alert.alert('Error', 'There was an error submitting your request.');
-    }
-  };
 
   return (
-    <View>
-      <Text>Category:</Text>
-      <Picker
-        selectedValue={category}
-        onValueChange={(itemValue) => {
-          setCategory(itemValue);
-          setSubCategory('');
+
+    <View style={styles.container}>
+
+      <FontAwesome5 name="hands-helping" size={100} color="#f84242" />
+
+      <Text>Welcome {auth.currentUser?.email} </Text>
+
+      <TouchableOpacity
+        style = {styles.button}
+        onPress={() => {
+          setFormType('needs');
+          setIsModalVisible(true);
+        }}
+        
+      >
+        <Text style = {styles.buttonText}>I need something...</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style = {styles.button}
+        onPress={() => {
+          setFormType('donations');
+          setIsModalVisible(true);
         }}
       >
-        <Picker.Item label="Select a category" value="" />
-        {Object.keys(categories).map((cat) => (
-          <Picker.Item key={cat} label={cat} value={cat} />
-        ))}
-      </Picker>
-      {category && (
-        <>
-          <Text>Subcategory:</Text>
-          <Picker
-            selectedValue={subCategory}
-            onValueChange={(itemValue) => setSubCategory(itemValue)}
-          >
-            <Picker.Item label="Select a subcategory" value="" />
-            {categories[category].map((sub) => (
-              <Picker.Item key={sub} label={sub} value={sub} />
-            ))}
-          </Picker>
-        </>
-      )}
-      <Text>Amount:</Text>
-      <TextInput
-        keyboardType="numeric"
-        value={amount}
-        onChangeText={setAmount}
-        style={styles.input}
-      />
-      <Text>Location:</Text>
-      <TextInput value={location} onChangeText={setLocation} style={styles.input} />
-      {category === 'nutrition' && (
-        <>
-          <Text>Expiration Date (YYYY-MM-DD):</Text>
-          <TextInput
-            value={expirationDate}
-            onChangeText={setExpirationDate}
-            style={styles.input}
-          />
-        </>
-      )}
-      <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+        <Text style = {styles.buttonText}>I want to donate...</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Map');
+  }}
+>
+  <Text style = {styles.buttonText}>Go to Map</Text>
+</TouchableOpacity>
+
+      
+      {/* will make overlay later */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+              <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+          </View>
+      </View>
+      </Modal>
+
+
+
+
+      <TouchableOpacity
+        style = {styles.signOutButton}
+        onPress = {clickSignOut}
+      >
+        <Text style = {styles.signOutButtonText}>Sign out</Text>
+
       </TouchableOpacity>
       
-      <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-        <Text style={styles.closeButtonText}>Close</Text>
-      </TouchableOpacity>
-
-    
     </View>
-
-
-
-
   )
 }
 
-export default Form;
+export default HomeScreenUI
 
 const styles = StyleSheet.create({
-    input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 15,
-      width: '100%',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#f84242',
+    width: '60%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 15,
+    borderColor: 'black',
+    width: deviceWidth > 800 ? 250 : '60%',
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  signOutButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: deviceWidth > 800 ? 250 : '60%',
+  },
+  signOutButtonText: {
+    textDecorationLine: 'underline',
+    color: 'black', 
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+},
+modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2
     },
-    submitButton: {
-      backgroundColor: '#FFD600',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      marginTop: 15,
-      borderColor: 'black',
-    },
-    submitButtonText: {
-      color: 'black',
-      fontWeight: '700',
-      fontSize: 16,
-    },
-    closeButton: {
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 15,
-        borderColor: 'black',
-      },
-      closeButtonText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 16,
-      },
-      
-  });
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: deviceWidth * 0.5, 
+    height: '80%',
+},
+
+
+})
+/*import { StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
+import Form from './Form'
+import React, {useState} from 'react'
+
+
+const HomeScreenUI = ({auth, clickSignOut}) => {
   
+  const [formType, setFormType] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+
+  return (
+    <View style={styles.container}>
+      <Text>Welcome {auth.currentUser?.email} </Text>
+
+      <TouchableOpacity
+        style = {styles.button}
+        onPress={() => {
+          setFormType('needs');
+          setIsModalVisible(true);
+        }}
+        
+      >
+        <Text style = {styles.buttonText}>I need something...</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style = {styles.button}
+        onPress={() => {
+          setFormType('donations');
+          setIsModalVisible(true);
+        }}
+      >
+        <Text style = {styles.buttonText}>I want to donate something...</Text>
+      </TouchableOpacity>
+      
+     
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+      </Modal>
+
+
+
+
+      <TouchableOpacity
+        style = {styles.signOutButton}
+        onPress = {clickSignOut}
+      >
+        <Text style = {styles.signOutButtonText}>Sign out</Text>
+
+      </TouchableOpacity>
+      
+    </View>
+  )
+}
+
+export default HomeScreenUI
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  button: {
+    backgroundColor: '#FFD600',
+    width: '60%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 15,
+    borderColor: 'black'
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  signOutButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  signOutButtonText: {
+    textDecorationLine: 'underline',
+    color: 'black', 
+  },
+
+}) */ 
+
