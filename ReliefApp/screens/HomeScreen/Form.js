@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions,
 import { Picker } from '@react-native-picker/picker';
 import { db } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -33,14 +34,24 @@ const categoryInformation = {
 };
 
 const Form = ({ formType , closeModal}) => {
-  let formFormtype = formType;
+  //let formType = formType;
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState(''); 
   const [amount, setAmount] = useState('');
   const [location, setLocation] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [error, setError] = useState('');
+  const navigation = useNavigation();
 
+  const handleSelectLocation = () => {
+    const onUpdateLocation = (selectedLocation) => {
+      setLocation(selectedLocation);
+      navigation.goBack();
+    };
+
+    // navigate to GoogleMapsScreen and pass onUpdateLocation in the params
+    navigation.navigate('Map', { onUpdateLocation });
+  };
 
   const handleSubmit = async () => {
     
@@ -60,7 +71,7 @@ const Form = ({ formType , closeModal}) => {
     const maxAmount = categoryInformation[category][subCategory].maxAmount;
     const unit = categoryInformation[category][subCategory].unit;
   
-    if (formFormtype == "needs" && parseInt(amount) > maxAmount) {
+    if (formType == "needs" && parseInt(amount) > maxAmount) {
       setError(`You can request at most ${maxAmount} ${unit} of ${subCategory}.`);
       return ;
     } else {
@@ -68,21 +79,14 @@ const Form = ({ formType , closeModal}) => {
     }
     
 
-    // use local variables so that we can get the most recent value
-    let formCategory = category;
-    let formSubCategory = subCategory;
-    let formAmount = amount;
-    let formLocation = location;
-    let formExpirationDate = expirationDate;
-
-    try {
-        const docRef = await addDoc(collection(db, formType), {
-        formCategory,
-        formSubCategory,
-        formAmount,
-        formLocation,
-        formExpirationDate,
-      });
+   try {
+    const docRef = await addDoc(collection(db, formType), {
+      category: category,
+      subCategory: subCategory,
+      amount: amount,
+      location: location,
+      expirationDate: expirationDate,
+    });
       Alert.alert('Success', 'Your request has been submitted!');
       console.log('Document written with ID: ', docRef.id);
       closeModal();
@@ -135,8 +139,13 @@ style={styles.container}
     onChangeText={setAmount}
     style={styles.input}
   />
-  <Text>Location:</Text>
-  <TextInput value={location} onChangeText={setLocation} style={styles.input} />
+  
+  <TextInput
+  placeholder="Enter your location"
+  onChangeText={text => setLocation(text)}
+/>
+
+
   {category === 'nutrition' && (
     <>
       <Text>Expiration Date (YYYY-MM-DD):</Text>
@@ -156,7 +165,13 @@ style={styles.container}
         style={styles.input}
       />
     </>
-  )}
+    
+  )
+  
+  }
+  <TouchableOpacity onPress={handleSelectLocation} style={styles.selectLocationButton}>
+      <Text style={styles.selectLocationButtonText}>Select Location</Text>
+    </TouchableOpacity>
   <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
     <Text style={styles.submitButtonText}>Submit</Text>
   </TouchableOpacity>
@@ -164,6 +179,7 @@ style={styles.container}
   <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
     <Text style={styles.closeButtonText}>Close</Text>
   </TouchableOpacity>
+  
 </ScrollView>
 </KeyboardAvoidingView>
 );
@@ -174,7 +190,7 @@ export default Form;
 const styles = StyleSheet.create({
 container: {
 flex: 1,
-width: 200,
+width: 300,
 },
 formStyle: {
 flexGrow: 1,
@@ -225,99 +241,4 @@ fontWeight: '700',
 fontSize: 16,
 },
 });
-
-/*import { StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
-import Form from './Form'
-import React, {useState} from 'react'
-
-
-const HomeScreenUI = ({auth, clickSignOut}) => {
-  
-  const [formType, setFormType] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-
-  return (
-    <View style={styles.container}>
-      <Text>Welcome {auth.currentUser?.email} </Text>
-
-      <TouchableOpacity
-        style = {styles.button}
-        onPress={() => {
-          setFormType('needs');
-          setIsModalVisible(true);
-        }}
-        
-      >
-        <Text style = {styles.buttonText}>I need something...</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style = {styles.button}
-        onPress={() => {
-          setFormType('donations');
-          setIsModalVisible(true);
-        }}
-      >
-        <Text style = {styles.buttonText}>I want to donate something...</Text>
-      </TouchableOpacity>
-      
-     
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={isModalVisible}
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
-      </Modal>
-
-
-
-
-      <TouchableOpacity
-        style = {styles.signOutButton}
-        onPress = {clickSignOut}
-      >
-        <Text style = {styles.signOutButtonText}>Sign out</Text>
-
-      </TouchableOpacity>
-      
-    </View>
-  )
-}
-
-export default HomeScreenUI
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  button: {
-    backgroundColor: '#FFD600',
-    width: '60%',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 15,
-    borderColor: 'black'
-  },
-  buttonText: {
-    color: 'black',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  signOutButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
-  signOutButtonText: {
-    textDecorationLine: 'underline',
-    color: 'black', 
-  },
-
-}) */ 
 

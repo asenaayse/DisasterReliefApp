@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   getStartedButton: {
-    backgroundColor: '#FFD600',
+    backgroundColor: '#f84242',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
