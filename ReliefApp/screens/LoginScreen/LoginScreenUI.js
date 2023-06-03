@@ -1,9 +1,11 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native'
 import React, {useState} from 'react'
 import { auth } from "../../firebase"
 import { createUserWithEmailAndPassword } from 'firebase/auth'; 
 import { signInWithEmailAndPassword } from 'firebase/auth'; 
+import { MaterialIcons } from '@expo/vector-icons';
 
+const deviceWidth = Dimensions.get('window').width;
 
 const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, clickSignin}) => {
     
@@ -12,6 +14,8 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
         style={styles.container}
         behavior='padding'
         >
+            <MaterialIcons name="person" size={180} color="#f84242" style={styles.icon} />
+      
             <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='Email'
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     inputContainer: {
-        width: '80%'
+        width: deviceWidth > 800 ? 250 : '60%',
     },
     input: {
         backgroundColor: 'white',
@@ -64,13 +68,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     buttonContainer: {
-        width: '60%',
+        width: deviceWidth > 800 ? 250 : '60%',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 40,
     },
     button: {
-        backgroundColor: '#FFD600',
+        backgroundColor: '#f84242',
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     buttonOutline: {
         backgroundColor: '#F6F6F6',
         marginTop: 5,
-        borderColor: '#FFD600',
+        borderColor: '#f84242',
         borderWidth: 2,
     },
     buttonText: {
@@ -92,5 +96,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
     },
+    icon: {
+        marginBottom: 20,
+      },
     
 })
