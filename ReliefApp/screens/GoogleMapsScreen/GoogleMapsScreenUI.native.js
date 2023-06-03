@@ -1,38 +1,34 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import MapView from 'react-native-maps';
+import React, { useEffect, useState } from 'react';
+import MapView, { Marker } from 'react-native-maps';
 
-const GoogleMapsScreenUI = ({ route }) => {
-  const { onUpdateLocation } = route.params;
-  const [selectedLocation, setSelectedLocation] = useState(null);
+const GoogleMapsScreenUI = ({ location }) => {
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 41.032064,
+    longitude: 29.258676,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
-  const handleMapClick = (event) => {
-    const newLocation = {
-      latitude: event.nativeEvent.coordinate.latitude,
-      longitude: event.nativeEvent.coordinate.longitude,
-    };
-
-    setSelectedLocation(newLocation);
-    onUpdateLocation(newLocation);
-  };
+  useEffect(() => {
+    if (location.lat && location.lng) {
+      setMapRegion({
+        latitude: location.lat,
+        longitude: location.lng,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    }
+  }, [location]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        onPress={handleMapClick}
-      >
-        {selectedLocation && (
-          <Marker coordinate={selectedLocation} />
-        )}
-      </MapView>
-    </View>
+    <MapView
+      style={{ flex: 1 }}
+      region={mapRegion}
+    >
+      <Marker
+        coordinate={mapRegion}
+      />
+    </MapView>
   );
 };
 

@@ -19,7 +19,7 @@ const RequestedItemsScreen = ({ navigation }) => {
   }, []);
 
   const renderItem = ({ item }) => (
-<TouchableOpacity onPress={() => navigation.navigate('Map', { location: item.location })}>
+    <TouchableOpacity onPress={() => navigation.navigate('Map', { location: item.location })}>
 
       <View style={styles.itemContainer}>
         <Text style={styles.category}>{item.category}</Text>

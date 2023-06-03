@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { Button,View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { db } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -43,15 +44,15 @@ const Form = ({ formType , closeModal}) => {
   const [error, setError] = useState('');
   const navigation = useNavigation();
 
-  const handleSelectLocation = () => {
-    const onUpdateLocation = (selectedLocation) => {
-      setLocation(selectedLocation);
-      navigation.goBack();
-    };
-
+ // const handleSelectLocation = () => {
+ //   const onUpdateLocation = (selectedLocation) => {
+//      setLocation(selectedLocation);
+//      navigation.goBack();
+//    };
+//
     // navigate to GoogleMapsScreen and pass onUpdateLocation in the params
-    navigation.navigate('Map', { onUpdateLocation });
-  };
+//    navigation.navigate('Map', { onUpdateLocation });
+ // };
 
   const handleSubmit = async () => {
     
@@ -77,6 +78,16 @@ const Form = ({ formType , closeModal}) => {
     } else {
       setError('');
     }
+
+    let locationData;
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+      const lat = response.data.results[0].geometry.location.lat
+      const lng = response.data.results[0].geometry.location.lng;
+      locationData = lat + ',' + lng ;
+    } catch (error) {
+      console.log(error);
+    }
     
 
    try {
@@ -84,7 +95,7 @@ const Form = ({ formType , closeModal}) => {
       category: category,
       subCategory: subCategory,
       amount: amount,
-      location: location,
+      location: locationData,
       expirationDate: expirationDate,
     });
       Alert.alert('Success', 'Your request has been submitted!');
@@ -99,12 +110,12 @@ const Form = ({ formType , closeModal}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" :"height"}
-style={styles.container}
->
-<ScrollView contentContainerStyle={styles.formStyle}>
-  {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-  <Text>Category:</Text>
-  <Picker
+      style={styles.container}
+    >
+    <ScrollView contentContainerStyle={styles.formStyle}>
+     {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
+     <Text>Category:</Text>
+     <Picker
     style={styles.input}
     selectedValue={category}
     onValueChange={(itemValue) => {
@@ -134,15 +145,17 @@ style={styles.container}
   )}
   <Text>Amount:</Text>
   <TextInput
+  placeholder="Enter amount"
     keyboardType="numeric"
     value={amount}
     onChangeText={setAmount}
     style={styles.input}
   />
-  
+  <Text>Location:</Text>
   <TextInput
   placeholder="Enter your location"
   onChangeText={text => setLocation(text)}
+  style={styles.input}
 />
 
 
@@ -164,14 +177,9 @@ style={styles.container}
         onChangeText={setExpirationDate}
         style={styles.input}
       />
-    </>
-    
-  )
-  
-  }
-  <TouchableOpacity onPress={handleSelectLocation} style={styles.selectLocationButton}>
-      <Text style={styles.selectLocationButtonText}>Select Location</Text>
-    </TouchableOpacity>
+    </>    
+  )  
+  }  
   <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
     <Text style={styles.submitButtonText}>Submit</Text>
   </TouchableOpacity>
