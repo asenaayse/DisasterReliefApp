@@ -77,16 +77,9 @@ const LoginScreen = () => {
       
             alert(errorMessage);
           });
-        
-          
-          
-
-      };
+                            
+      }
       
-      
-
-      
-
     return (
       <LoginScreenUI 
       email = {email}
