@@ -71,9 +71,11 @@ const Form = ({ formType , closeModal, auth}) => {
     let locationData;
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
-      const lat = response.data.results[0].geometry.location.lat
-      const lng = response.data.results[0].geometry.location.lng;
-      locationData = lat + ',' + lng ;
+   // const lat = response.data.results[0].geometry.location.lat
+   // const lng = response.data.results[0].geometry.location.lng;
+   // locationData = lat + ',' + lng + longName ;
+      const longName = response.data.results[0].formatted_address;
+      locationData = longName;
     } catch (error) {
       console.log(error);
     }
