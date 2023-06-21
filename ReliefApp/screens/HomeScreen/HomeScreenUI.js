@@ -81,7 +81,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-              <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+             <Form formType={formType} closeModal={() => setIsModalVisible(false)} auth={auth} />
           </View>
       </View>
       </Modal>

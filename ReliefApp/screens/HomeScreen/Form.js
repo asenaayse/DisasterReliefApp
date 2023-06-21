@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button,View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -34,8 +34,7 @@ const categoryInformation = {
   },
 };
 
-const Form = ({ formType , closeModal}) => {
-  //let formType = formType;
+const Form = ({ formType , closeModal, auth}) => {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState(''); 
   const [amount, setAmount] = useState('');
@@ -43,17 +42,7 @@ const Form = ({ formType , closeModal}) => {
   const [expirationDate, setExpirationDate] = useState('');
   const [error, setError] = useState('');
   const navigation = useNavigation();
-
- // const handleSelectLocation = () => {
- //   const onUpdateLocation = (selectedLocation) => {
-//      setLocation(selectedLocation);
-//      navigation.goBack();
-//    };
-//
-    // navigate to GoogleMapsScreen and pass onUpdateLocation in the params
-//    navigation.navigate('Map', { onUpdateLocation });
- // };
-
+ 
   const handleSubmit = async () => {
     
     // fill all fields
@@ -92,6 +81,7 @@ const Form = ({ formType , closeModal}) => {
 
    try {
     const docRef = await addDoc(collection(db, formType), {
+      name: auth.currentUser?.email, // Include the user's name here
       category: category,
       subCategory: subCategory,
       amount: amount,
