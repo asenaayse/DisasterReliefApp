@@ -14,34 +14,8 @@ const LoginScreen = () => {
 
     // sign up
     const clickSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredentials) => {
-            const user = userCredentials.user;
-            console.log("new user: " +user.email);
-
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            let errorMessage;
-      
-            switch (errorCode) {
-              case 'auth/email-already-in-use':
-                errorMessage = 'The email address is already in use.';
-                break;
-              case 'auth/invalid-email':
-                errorMessage = 'The email address is not valid.';
-                break;
-              case 'auth/weak-password':
-                errorMessage = 'The password is too weak.';
-                break;
-              default:
-                errorMessage = error.message;
-            }
-      
-            alert(errorMessage);
-          });
-      };
-    
+        navigation.navigate('SignUpScreen'); }
+  
       //sign in
       const clickSignin = () => {
         signInWithEmailAndPassword(auth, email, password)
