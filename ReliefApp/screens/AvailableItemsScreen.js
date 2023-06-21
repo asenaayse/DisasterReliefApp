@@ -25,6 +25,7 @@ const AvailableItemsScreen = ({ navigation }) => {
         <Text style={styles.category}>{item.category}</Text>
         <Text style={styles.subCategory}>{item.subCategory}</Text>
         <Text style={styles.location}>Location: {item.location}</Text>
+        <Text style={styles.name}>Contact: {item.name}</Text>
       </View>
     </TouchableOpacity>
   );
