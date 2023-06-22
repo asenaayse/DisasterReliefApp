@@ -14,15 +14,18 @@ const HomeScreen = () => {
       })
       .catch(error => alert(error.message))
   }
+ 
 
   return (
     <HomeScreenUI
     auth = {auth}
     clickSignOut = {clickSignOut}
     navigation={navigation}
+
     />
     
   )
 }
 
 export default HomeScreen
+

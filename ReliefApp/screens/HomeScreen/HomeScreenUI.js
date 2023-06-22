@@ -19,6 +19,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
 
       <Text>Welcome {auth.currentUser?.email} </Text>
 
+
       <TouchableOpacity
         style = {styles.button}
         onPress={() => {
@@ -38,6 +39,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
         }}
       >
         <Text style = {styles.buttonText}>I want to donate...</Text>
+
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -49,8 +51,28 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   <Text style = {styles.buttonText}>Go to Map</Text>
 </TouchableOpacity>
 
+
+<TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Requested Items');
+  }}
+>
+  <Text style = {styles.buttonText}>Requested Items</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Available Items');
+  }}
+>
+  <Text style = {styles.buttonText}>Available Items</Text>
+</TouchableOpacity>
+
+
       
-      {/* will make overlay later */}
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -59,7 +81,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-              <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+             <Form formType={formType} closeModal={() => setIsModalVisible(false)} auth={auth} />
           </View>
       </View>
       </Modal>

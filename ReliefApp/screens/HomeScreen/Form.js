@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
+import { Button,View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -32,16 +34,15 @@ const categoryInformation = {
   },
 };
 
-const Form = ({ formType , closeModal}) => {
-  let formFormtype = formType;
+const Form = ({ formType , closeModal, auth}) => {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState(''); 
   const [amount, setAmount] = useState('');
   const [location, setLocation] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [error, setError] = useState('');
-
-
+  const navigation = useNavigation();
+ 
   const handleSubmit = async () => {
     
     // fill all fields
@@ -60,29 +61,35 @@ const Form = ({ formType , closeModal}) => {
     const maxAmount = categoryInformation[category][subCategory].maxAmount;
     const unit = categoryInformation[category][subCategory].unit;
   
-    if (formFormtype == "needs" && parseInt(amount) > maxAmount) {
+    if (formType == "needs" && parseInt(amount) > maxAmount) {
       setError(`You can request at most ${maxAmount} ${unit} of ${subCategory}.`);
       return ;
     } else {
       setError('');
     }
+
+    let locationData;
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+   // const lat = response.data.results[0].geometry.location.lat
+   // const lng = response.data.results[0].geometry.location.lng;
+   // locationData = lat + ',' + lng + longName ;
+      const longName = response.data.results[0].formatted_address;
+      locationData = longName;
+    } catch (error) {
+      console.log(error);
+    }
     
 
-    // use local variables so that we can get the most recent value
-    let formCategory = category;
-    let formSubCategory = subCategory;
-    let formAmount = amount;
-    let formLocation = location;
-    let formExpirationDate = expirationDate;
-
-    try {
-        const docRef = await addDoc(collection(db, formType), {
-        formCategory,
-        formSubCategory,
-        formAmount,
-        formLocation,
-        formExpirationDate,
-      });
+   try {
+    const docRef = await addDoc(collection(db, formType), {
+      name: auth.currentUser?.email, // Include the user's name here
+      category: category,
+      subCategory: subCategory,
+      amount: amount,
+      location: locationData,
+      expirationDate: expirationDate,
+    });
       Alert.alert('Success', 'Your request has been submitted!');
       console.log('Document written with ID: ', docRef.id);
       closeModal();
@@ -93,115 +100,145 @@ const Form = ({ formType , closeModal}) => {
   };
 
   return (
-    <View style={styles.formStyle}>
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-      <Text>Category:</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" :"height"}
+      style={styles.container}
+    >
+    <ScrollView contentContainerStyle={styles.formStyle}>
+     {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
+     <Text>Category:</Text>
+     <Picker
+    style={styles.input}
+    selectedValue={category}
+    onValueChange={(itemValue) => {
+      setCategory(itemValue);
+      setSubCategory('');
+    }}
+  >
+    <Picker.Item label="Select a category" value="" />
+    {Object.keys(categories).map((cat) => (
+      <Picker.Item key={cat} label={cat} value={cat} />
+    ))}
+  </Picker>
+  {category && (
+    <>
+      <Text>Subcategory:</Text>
       <Picker
-        style={styles.input}
-        selectedValue={category}
-        onValueChange={(itemValue) => {
-          setCategory(itemValue);
-          setSubCategory('');
-        }}
+      style={styles.input}
+        selectedValue={subCategory}
+        onValueChange={(itemValue) => setSubCategory(itemValue)}
       >
-        <Picker.Item label="Select a category" value="" />
-        {Object.keys(categories).map((cat) => (
-          <Picker.Item key={cat} label={cat} value={cat} />
+        <Picker.Item label="Select a subcategory" value="" />
+        {categories[category].map((sub) => (
+          <Picker.Item key={sub} label={sub} value={sub} />
         ))}
       </Picker>
-      {category && (
-        <>
-          <Text>Subcategory:</Text>
-          <Picker
-          style={styles.input}
-            selectedValue={subCategory}
-            onValueChange={(itemValue) => setSubCategory(itemValue)}
-          >
-            <Picker.Item label="Select a subcategory" value="" />
-            {categories[category].map((sub) => (
-              <Picker.Item key={sub} label={sub} value={sub} />
-            ))}
-          </Picker>
-        </>
-      )}
-      <Text>Amount:</Text>
+    </>
+  )}
+  <Text>Amount:</Text>
+  <TextInput
+  placeholder="Enter amount"
+    keyboardType="numeric"
+    value={amount}
+    onChangeText={setAmount}
+    style={styles.input}
+  />
+  <Text>Location:</Text>
+  <TextInput
+  placeholder="Enter your location"
+  onChangeText={text => setLocation(text)}
+  style={styles.input}
+/>
+
+
+  {category === 'nutrition' && (
+    <>
+      <Text>Expiration Date (YYYY-MM-DD):</Text>
       <TextInput
-        keyboardType="numeric"
-        value={amount}
-        onChangeText={setAmount}
+        value={expirationDate}
+        onChangeText={setExpirationDate}
         style={styles.input}
       />
-      <Text>Location:</Text>
-      <TextInput value={location} onChangeText={setLocation} style={styles.input} />
-      {category === 'nutrition' && (
-        <>
-          <Text>Expiration Date (YYYY-MM-DD):</Text>
-          <TextInput
-            value={expirationDate}
-            onChangeText={setExpirationDate}
-            style={styles.input}
-          />
-        </>
-      )}
-      <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-        <Text style={styles.closeButtonText}>Close</Text>
-      </TouchableOpacity>
-
-    
-    </View>
-  )
-      
-}
+    </>
+  )}
+  {subCategory === 'painkiller' && (
+    <>
+      <Text>Expiration Date (YYYY-MM-DD):</Text>
+      <TextInput
+        value={expirationDate}
+        onChangeText={setExpirationDate}
+        style={styles.input}
+      />
+    </>    
+  )  
+  }  
+  <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
+    <Text style={styles.submitButtonText}>Submit</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+    <Text style={styles.closeButtonText}>Close</Text>
+  </TouchableOpacity>
+  
+</ScrollView>
+</KeyboardAvoidingView>
+);
+};
 
 export default Form;
 
 const styles = StyleSheet.create({
-    formStyle: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+container: {
+flex: 1,
+width: 300,
+},
+formStyle: {
+flexGrow: 1,
+justifyContent: 'center',
+alignItems: 'center',
+},
+input: {
+borderWidth: 1,
+borderColor: '#ccc',
+borderRadius: 5,
+padding: 10,
+marginBottom: 15,
+width: deviceWidth > 800 ? 250 : '80%',
+},
+picker: {
+  width: deviceWidth > 800 ? 250 : '80%',
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 5,
+  marginBottom: 15,
+},
+submitButton: {
+backgroundColor: '#f84242',
+padding: 10,
+borderRadius: 5,
+alignItems: 'center',
+marginTop: 15,
+borderColor: 'black',
+width: deviceWidth > 800 ? 250 : '80%',
+},
+submitButtonText: {
+  color: 'black',
+  fontWeight: '700',
+  fontSize: 16,
+},
+closeButton: {
+  backgroundColor: '#f84242',
+  padding: 10,
+  borderRadius: 5,
+  alignItems: 'center',
+  marginTop: 15,
+  borderColor: 'black',
+  width: deviceWidth > 800 ? 250 : '80%',
+},
+closeButtonText: {
+color: 'black',
+fontWeight: '700',
+fontSize: 16,
+},
+});
 
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 15,
-      width: deviceWidth > 800 ? 250 : '60%',
-    },
-    submitButton: {
-      backgroundColor: '#f84242',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      marginTop: 15,
-      borderColor: 'black',
-      width: deviceWidth > 800 ? 250 : '60%',
-    },
-    submitButtonText: {
-      color: 'black',
-      fontWeight: '700',
-      fontSize: 16,
-    },
-    closeButton: {
-        backgroundColor: '#f84242',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 15,
-        borderColor: 'black',
-        width: deviceWidth > 800 ? 250 : '60%',
-      },
-      closeButtonText: {
-        color: 'black',
-        fontWeight: '700',
-        fontSize: 16,
-      },
-      
-  });
-  
