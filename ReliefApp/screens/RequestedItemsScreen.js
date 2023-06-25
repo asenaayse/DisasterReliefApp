@@ -49,7 +49,7 @@ const renderItem = ({ item }) => (
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile', { userId: item.userId })}
+          onPress={() => navigation.navigate('Profile', { userData: { contact: item.name } })}
         >
           <Text style={styles.buttonText}>Go to Profile</Text>
         </TouchableOpacity>

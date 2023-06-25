@@ -38,8 +38,8 @@ const renderItem = ({ item }) => (
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile', { userId: item.userId })}
-        >
+          onPress={() => navigation.navigate('Profile', { userData: { contact: item.name } })}
+          >
           <Text style={styles.buttonText}>Go to Profile</Text>
         </TouchableOpacity>
       </View>
@@ -118,42 +118,3 @@ const styles = {
 
 
 
-
-
- /* const renderItem = ({ item }) => (
-<TouchableOpacity onPress={() => navigation.navigate('Map', { location: item.location })}>
-
-      <View style={styles.itemContainer}>
-        <Text style={styles.category}>{item.category}</Text>
-        <Text style={styles.subCategory}>{item.subCategory}</Text>
-        <Text style={styles.location}>Location: {item.location}</Text>
-        <Text style={styles.name}>Contact: {item.name}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-*/
-/*
-const renderItem = ({ item }) => (
-  <View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.category}>{item.category}</Text>
-        <Text style={styles.subCategory}>{item.subCategory}</Text>
-        <Text style={styles.location}>Location: {item.location}</Text>
-        <Text style={styles.name}>Contact: {item.name}</Text>
-        
-        <TouchableOpacity onPress={() => navigation.navigate('Map', { location: item.location })}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Go to Location</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userId: item.userId })}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Go to Profile</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-       
-  </View>
-);
-*/
