@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native'
+import { KeyboardAvoidingView, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native'
 import React, {useState} from 'react'
 import { auth } from "../../firebase"
 import { createUserWithEmailAndPassword } from 'firebase/auth'; 
@@ -14,8 +14,8 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
         style={styles.container}
         behavior='padding'
         >
-            <MaterialIcons name="person" size={180} color="#f84242" style={styles.icon} />
-      
+            <Image source={require('../../assets/ReliefHub.png')} style={styles.logo} />
+
             <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='Email'
@@ -38,11 +38,9 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
                 >
                     <Text style={styles.buttonText}>Sign in</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={clickSignUp}
-                    style={[styles.button, styles.buttonOutline]}
-                >
-                    <Text style={styles.buttonOutlineText}>Sign up</Text>
+                <Text style= {styles.text1}>Don't you have an account ?</Text>
+                <TouchableOpacity onPress={clickSignUp}> 
+                    <Text style={styles.signuptext}>Sign Up!</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
@@ -56,28 +54,38 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: -120,
+
     },
     inputContainer: {
         width: deviceWidth > 800 ? 250 : '60%',
+        marginTop: -120,
+
+    },
+    logo:{
+        width: 450,
+        height: 450,
+        resizeMode: 'contain',
     },
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 15,
         paddingVertical: 10,
-        borderRadius: 15,
+        borderRadius: 20,
         marginTop: 10,
+        height: 40,        
     },
     buttonContainer: {
         width: deviceWidth > 800 ? 250 : '60%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40,
+        marginTop: 25,
     },
     button: {
         backgroundColor: '#f84242',
-        width: '100%',
-        padding: 15,
-        borderRadius: 10,
+        width: '90%',
+        padding: 10,
+        borderRadius: 40,
         alignItems: 'center',
     },
     buttonOutline: {
@@ -89,15 +97,22 @@ const styles = StyleSheet.create({
     buttonText: {
        color: 'black',
        fontWeight: '700',
-       fontSize: 16,
+       fontSize: 18,
     },
-    buttonOutlineText: {
+    text1:{
+        color: 'black',
+        fontweight: '700',
+        fontSize: 16,
+        marginTop: 15,
+    },
+    signuptext: {
         color: 'black',
         fontWeight: '700',
         fontSize: 16,
+
     },
     icon: {
-        marginBottom: 20,
+        marginBottom: 0,
       },
     
 })
