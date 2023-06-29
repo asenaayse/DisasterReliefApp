@@ -3,7 +3,7 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const WelcomeScreen = ({ navigation }) => {
   const handleGetStarted = () => {
-    navigation.navigate('Login');
+    navigation.navigate('SignUpScreen');
   };
 
   return (

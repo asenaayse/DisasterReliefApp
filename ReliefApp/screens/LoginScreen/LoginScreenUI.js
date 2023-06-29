@@ -1,9 +1,7 @@
 import { KeyboardAvoidingView, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native'
 import React, {useState} from 'react'
-import { auth } from "../../firebase"
-import { createUserWithEmailAndPassword } from 'firebase/auth'; 
-import { signInWithEmailAndPassword } from 'firebase/auth'; 
-import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
+
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -17,12 +15,20 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
             <Image source={require('../../assets/ReliefHub.png')} style={styles.logo} />
 
             <View style={styles.inputContainer}>
+                <View style={styles.inputIcon}>
+                     <Entypo name="mail" size={24} color="black" />
+                </View>
                 <TextInput
                     placeholder='Email'
                     value = {email}
                     onChangeText={text => setEmail(text)}
                     style={styles.input}
                 />
+             </View>
+             <View style={styles.inputContainer}>
+                <View style={styles.inputIcon}>
+                     <Entypo name="lock" size={24} color="black" />
+                </View>
                 <TextInput
                     placeholder='Password'
                     value = {password}
@@ -58,14 +64,17 @@ const styles = StyleSheet.create({
 
     },
     inputContainer: {
-        width: deviceWidth > 800 ? 250 : '60%',
-        marginTop: -120,
+        width: deviceWidth > 800 ? 250 : '50%',
+        flexDirection: 'row',
+        marginTop: 0,
 
     },
     logo:{
-        width: 450,
-        height: 450,
+        width: 400,
+        height: 400,
         resizeMode: 'contain',
+        marginTop: -50,
+        marginBottom: -100,
     },
     input: {
         backgroundColor: 'white',
@@ -73,8 +82,16 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 20,
         marginTop: 10,
-        height: 40,        
+        height: 40,
+        width: deviceWidth > 800 ? 250 : '100%',
+        flexDirection: 'row',
+        alignItems: 'center',        
     },
+    inputIcon: {
+        marginRight: 10,
+        marginTop: 15,
+        marginLeft: -30,
+      },
     buttonContainer: {
         width: deviceWidth > 800 ? 250 : '60%',
         justifyContent: 'center',
