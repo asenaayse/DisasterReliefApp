@@ -81,7 +81,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-              <Form formType={formType} closeModal={() => setIsModalVisible(false)} />
+             <Form formType={formType} closeModal={() => setIsModalVisible(false)} auth={auth} />
           </View>
       </View>
       </Modal>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f84242',
     width: '60%',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 40,
     alignItems: 'center',
     marginTop: 15,
     borderColor: 'black',

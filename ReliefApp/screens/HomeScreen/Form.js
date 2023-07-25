@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button,View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -9,33 +9,32 @@ import axios from 'axios';
 const deviceWidth = Dimensions.get('window').width;
 
 const categories = {
-  medical: ['painkiller', 'bandage'],
-  heating: ['blanket', 'electric_heater'],
-  shelter: ['tent', 'container'],
-  nutrition: ['food', 'water'],
+  Medical: ['Painkiller', 'Bandage'],
+  Heating: ['Blanket', 'Electric_Heater'],
+  Shelter: ['Tent', 'Container'],
+  Nutrition: ['Food', 'Water'],
 };
 
 const categoryInformation = {
-  medical: {
-    painkiller: {maxAmount: 1, unit: "packet"},
-    bandage: {maxAmount: 2, unit: "rolls"},
+  Medical: {
+    Painkiller: {maxAmount: 1, unit: "packet"},
+    Bandage: {maxAmount: 2, unit: "rolls"},
   },
-  heating: {
-    blanket: {maxAmount: 3, unit:"blanket(s)"},
-    electric_heater: {maxAmount: 1, unit:"heater(s)"},
+  Heating: {
+    Blanket: {maxAmount: 3, unit:"blanket(s)"},
+    Electric_Heater: {maxAmount: 1, unit:"heater(s)"},
   },
-  shelter: {
-    tent: {maxAmount: 1, unit:"tent(s)"},
-    container: {maxAmount: 1, unit:"container(s)"},
+  Shelter: {
+    Tent: {maxAmount: 1, unit:"tent(s)"},
+    Container: {maxAmount: 1, unit:"container(s)"},
   },
-  nutrition: {
-    food: {maxAmount: 4, unit: "per_person"},
-    water: {maxAmount: 4, unit: "2L_bottle(s)"}
+  Nutrition: {
+    Food: {maxAmount: 4, unit: "per_person"},
+    Water: {maxAmount: 4, unit: "2L_bottle(s)"}
   },
 };
 
-const Form = ({ formType , closeModal}) => {
-  //let formType = formType;
+const Form = ({ formType , closeModal, auth}) => {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState(''); 
   const [amount, setAmount] = useState('');
@@ -43,17 +42,7 @@ const Form = ({ formType , closeModal}) => {
   const [expirationDate, setExpirationDate] = useState('');
   const [error, setError] = useState('');
   const navigation = useNavigation();
-
- // const handleSelectLocation = () => {
- //   const onUpdateLocation = (selectedLocation) => {
-//      setLocation(selectedLocation);
-//      navigation.goBack();
-//    };
-//
-    // navigate to GoogleMapsScreen and pass onUpdateLocation in the params
-//    navigation.navigate('Map', { onUpdateLocation });
- // };
-
+ 
   const handleSubmit = async () => {
     
     // fill all fields
@@ -82,9 +71,11 @@ const Form = ({ formType , closeModal}) => {
     let locationData;
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
-      const lat = response.data.results[0].geometry.location.lat
-      const lng = response.data.results[0].geometry.location.lng;
-      locationData = lat + ',' + lng ;
+   // const lat = response.data.results[0].geometry.location.lat
+   // const lng = response.data.results[0].geometry.location.lng;
+   // locationData = lat + ',' + lng + longName ;
+      const longName = response.data.results[0].formatted_address;
+      locationData = longName;
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +83,7 @@ const Form = ({ formType , closeModal}) => {
 
    try {
     const docRef = await addDoc(collection(db, formType), {
+      name: auth.currentUser?.email, // Include the user's name here
       category: category,
       subCategory: subCategory,
       amount: amount,
@@ -159,7 +151,7 @@ const Form = ({ formType , closeModal}) => {
 />
 
 
-  {category === 'nutrition' && (
+  {subCategory === 'Food' && (
     <>
       <Text>Expiration Date (YYYY-MM-DD):</Text>
       <TextInput
@@ -169,7 +161,7 @@ const Form = ({ formType , closeModal}) => {
       />
     </>
   )}
-  {subCategory === 'painkiller' && (
+  {subCategory === 'Painkiller' && (
     <>
       <Text>Expiration Date (YYYY-MM-DD):</Text>
       <TextInput
@@ -198,32 +190,36 @@ export default Form;
 const styles = StyleSheet.create({
 container: {
 flex: 1,
-width: 300,
+width: deviceWidth > 800 ? 250 : '160%',
 },
 formStyle: {
 flexGrow: 1,
 justifyContent: 'center',
 alignItems: 'center',
+width: deviceWidth > 800 ? 250 : '100%',
+
 },
 input: {
-borderWidth: 1,
+borderWidth: 0.5,
 borderColor: '#ccc',
-borderRadius: 5,
+borderRadius: 20,
+padding: 7,
+marginBottom: 7,
+width: deviceWidth > 800 ? 250 : '90%',
 padding: 10,
-marginBottom: 15,
-width: deviceWidth > 800 ? 250 : '80%',
 },
 picker: {
-  width: deviceWidth > 800 ? 250 : '80%',
+  width: deviceWidth > 800 ? 250 : '100%',
   borderWidth: 1,
   borderColor: '#ccc',
-  borderRadius: 5,
+  borderRadius: 20,
   marginBottom: 15,
+  
 },
 submitButton: {
 backgroundColor: '#f84242',
 padding: 10,
-borderRadius: 5,
+borderRadius: 20,
 alignItems: 'center',
 marginTop: 15,
 borderColor: 'black',
@@ -237,7 +233,7 @@ submitButtonText: {
 closeButton: {
   backgroundColor: '#f84242',
   padding: 10,
-  borderRadius: 5,
+  borderRadius: 20,
   alignItems: 'center',
   marginTop: 15,
   borderColor: 'black',
