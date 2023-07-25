@@ -6,7 +6,7 @@ const WelcomeScreen = () => {
   const navigation = useNavigation();
 
   const handleGetStartedPress = () => {
-    navigation.navigate('Login');
+    navigation.navigate('SignUpScreen');
   };
 
   return (

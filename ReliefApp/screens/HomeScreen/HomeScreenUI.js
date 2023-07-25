@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f84242',
     width: '60%',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 40,
     alignItems: 'center',
     marginTop: 15,
     borderColor: 'black',

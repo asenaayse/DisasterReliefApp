@@ -9,28 +9,28 @@ import axios from 'axios';
 const deviceWidth = Dimensions.get('window').width;
 
 const categories = {
-  medical: ['painkiller', 'bandage'],
-  heating: ['blanket', 'electric_heater'],
-  shelter: ['tent', 'container'],
-  nutrition: ['food', 'water'],
+  Medical: ['Painkiller', 'Bandage'],
+  Heating: ['Blanket', 'Electric_Heater'],
+  Shelter: ['Tent', 'Container'],
+  Nutrition: ['Food', 'Water'],
 };
 
 const categoryInformation = {
-  medical: {
-    painkiller: {maxAmount: 1, unit: "packet"},
-    bandage: {maxAmount: 2, unit: "rolls"},
+  Medical: {
+    Painkiller: {maxAmount: 1, unit: "packet"},
+    Bandage: {maxAmount: 2, unit: "rolls"},
   },
-  heating: {
-    blanket: {maxAmount: 3, unit:"blanket(s)"},
-    electric_heater: {maxAmount: 1, unit:"heater(s)"},
+  Heating: {
+    Blanket: {maxAmount: 3, unit:"blanket(s)"},
+    Electric_Heater: {maxAmount: 1, unit:"heater(s)"},
   },
-  shelter: {
-    tent: {maxAmount: 1, unit:"tent(s)"},
-    container: {maxAmount: 1, unit:"container(s)"},
+  Shelter: {
+    Tent: {maxAmount: 1, unit:"tent(s)"},
+    Container: {maxAmount: 1, unit:"container(s)"},
   },
-  nutrition: {
-    food: {maxAmount: 4, unit: "per_person"},
-    water: {maxAmount: 4, unit: "2L_bottle(s)"}
+  Nutrition: {
+    Food: {maxAmount: 4, unit: "per_person"},
+    Water: {maxAmount: 4, unit: "2L_bottle(s)"}
   },
 };
 
@@ -151,7 +151,7 @@ const Form = ({ formType , closeModal, auth}) => {
 />
 
 
-  {category === 'nutrition' && (
+  {subCategory === 'Food' && (
     <>
       <Text>Expiration Date (YYYY-MM-DD):</Text>
       <TextInput
@@ -161,7 +161,7 @@ const Form = ({ formType , closeModal, auth}) => {
       />
     </>
   )}
-  {subCategory === 'painkiller' && (
+  {subCategory === 'Painkiller' && (
     <>
       <Text>Expiration Date (YYYY-MM-DD):</Text>
       <TextInput
@@ -190,32 +190,36 @@ export default Form;
 const styles = StyleSheet.create({
 container: {
 flex: 1,
-width: 300,
+width: deviceWidth > 800 ? 250 : '160%',
 },
 formStyle: {
 flexGrow: 1,
 justifyContent: 'center',
 alignItems: 'center',
+width: deviceWidth > 800 ? 250 : '100%',
+
 },
 input: {
-borderWidth: 1,
+borderWidth: 0.5,
 borderColor: '#ccc',
-borderRadius: 5,
+borderRadius: 20,
+padding: 7,
+marginBottom: 7,
+width: deviceWidth > 800 ? 250 : '90%',
 padding: 10,
-marginBottom: 15,
-width: deviceWidth > 800 ? 250 : '80%',
 },
 picker: {
-  width: deviceWidth > 800 ? 250 : '80%',
+  width: deviceWidth > 800 ? 250 : '100%',
   borderWidth: 1,
   borderColor: '#ccc',
-  borderRadius: 5,
+  borderRadius: 20,
   marginBottom: 15,
+  
 },
 submitButton: {
 backgroundColor: '#f84242',
 padding: 10,
-borderRadius: 5,
+borderRadius: 20,
 alignItems: 'center',
 marginTop: 15,
 borderColor: 'black',
@@ -229,7 +233,7 @@ submitButtonText: {
 closeButton: {
   backgroundColor: '#f84242',
   padding: 10,
-  borderRadius: 5,
+  borderRadius: 20,
   alignItems: 'center',
   marginTop: 15,
   borderColor: 'black',
