@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import MapScreen from './MapScreen';
+import { useNavigation } from '@react-navigation/native';
+import { Button,Text } from 'react-native';
 
 const MapScreen = () => {
     const [donations, setAvailableItems] = useState([]);
     const [needs, setRequestedItems] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -45,20 +47,28 @@ const MapScreen = () => {
                 <Marker
                     key={item.id}
                     coordinate={{ latitude: item.locationLat, longitude: item.locationLng }}
-                    title={"Contact: " + item.name}
-                    description={item.category + " - " + item.amount +" "+ item.subCategory}
                     pinColor="green"
-                />
+                >
+                 <Callout onPress={() => navigation.navigate('Personal', { userEmail: item.name })}>
+                    <Text>{"Contact: " + item.name}</Text>
+                    <Text>{item.category + " - " + item.amount + " " + item.subCategory}</Text>
+                    <Button title="Go to Profile" />
+                </Callout>
+        </Marker>
             ))}
 
             {needs.map(item => (
                 <Marker
                     key={item.id}
                     coordinate={{ latitude: item.locationLat, longitude: item.locationLng }}
-                    title={"Contact: " + item.name}
-                    description={item.category + " - " + item.amount +" "+ item.subCategory}
                     pinColor="red"
-                />
+                >
+                <Callout onPress={() => navigation.navigate('Personal', { userEmail: item.name })}>
+                    <Text>{"Contact: " + item.name}</Text>
+                    <Text>{item.category + " - " + item.amount + " " + item.subCategory}</Text>
+                    <Button title="Go to Profile" />
+                </Callout>
+            </Marker>    
             ))}
         </MapView>
     );
