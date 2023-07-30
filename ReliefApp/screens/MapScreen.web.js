@@ -62,7 +62,10 @@ const MapScreen = () => {
             key={item.id}
             position={{ lat: item.locationLat, lng: item.locationLng }}
             icon={{url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"}}
-            onClick={() => setSelectedItem(item)}
+            onClick={() => {
+              setSelectedItem(item);
+              
+            }}
           />
         ))}
 
@@ -71,20 +74,27 @@ const MapScreen = () => {
             key={item.id}
             position={{ lat: item.locationLat, lng: item.locationLng }}
             icon={{url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"}}
-            onClick={() => setSelectedItem(item)}
+            onClick={() => {
+              setSelectedItem(item);
+              
+            }}
           />
         ))}
 
         {selectedItem && (
           <InfoWindow
             position={{ lat: selectedItem.locationLat, lng: selectedItem.locationLng }}
-            onCloseClick={() => setSelectedItem(null)}
+            onCloseClick={() => {
+              setSelectedItem(null);              
+            }}
           >
             <div>
               <h2>{"Contact: " + selectedItem.name}</h2>
               <p>{selectedItem.category+ " - " + selectedItem.amount+ " " +selectedItem.subCategory}</p>
-			  <button onClick={handleButtonClick}>Go to profile</button>
-			</div>
+              <button onClick={() => navigation.navigate('Personal', { userEmail: selectedItem.name })}>
+                  Go to Profile
+              </button>
+			      </div>
           </InfoWindow>
         )}
       </GoogleMap>
