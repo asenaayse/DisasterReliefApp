@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 //import auth from '@react-native-firebase/auth'; // replace with your auth module
 import { useRoute } from '@react-navigation/native';
 import { FontAwesome5  } from '@expo/vector-icons'; // Import the icon you want to use
-
+const deviceWidth = Dimensions.get('window').width;
 const PersonalScreen = () => {
   const [donations, setDonations] = useState([]);
   const [requests, setRequests] = useState([]);
 
   const route = useRoute();
   const { userEmail } = route.params || {};
+
+  
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     marginRight: 580,
     borderColor: 'black',
     padding: 20,
+    width: deviceWidth > 800 ? 250 : '50%',
   },
   itemContainer: {
     flexDirection: 'row',
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     marginLeft: 16,
+    padding: 4,
   },
 });
 
