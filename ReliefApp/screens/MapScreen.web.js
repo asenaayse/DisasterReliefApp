@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useNavigation } from '@react-navigation/native'; // import the hook
 
 const MapScreen = () => {
   const [donations, setAvailableItems] = useState([]);
   const [needs, setRequestedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const navigation = useNavigation(); // define the hook
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -41,6 +43,10 @@ const MapScreen = () => {
 	
   };
 
+  const handleButtonClick = () => {
+    // navigate to 'DetailScreen' with the selected item as a parameter
+    navigation.navigate('Profile', { item: selectedItem });
+  };
   return (
     <LoadScript
       googleMapsApiKey="AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c"
@@ -77,7 +83,8 @@ const MapScreen = () => {
             <div>
               <h2>{"Contact: " + selectedItem.name}</h2>
               <p>{selectedItem.category+ " - " + selectedItem.amount+ " " +selectedItem.subCategory}</p>
-            </div>
+			  <button onClick={handleButtonClick}>Go to profile</button>
+			</div>
           </InfoWindow>
         )}
       </GoogleMap>
