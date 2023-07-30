@@ -40,7 +40,6 @@ const PersonalScreen = () => {
   return (
 
     <View style={styles.container}>
-    <Text style={styles.header}>User: userEmail</Text>
       <Text style={styles.header}>Donations</Text>
       {donations.map((item, index) => (
         <View key={index} style={styles.itemContainer}>
