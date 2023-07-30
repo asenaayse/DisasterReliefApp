@@ -10,6 +10,7 @@ import GoogleMapsScreen from './screens/GoogleMapsScreen/GoogleMapsScreen';
 import RequestedItemsScreen from './screens/RequestedItemsScreen';
 import AvailableItemsScreen from './screens/AvailableItemsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import MapScreen from './screens/MapScreen';
 // colors from: https://colordesigner.io/#FFD600-3C691C-ff6d1f-D8D2DD-1c1d21
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function App() {
      <Stack.Screen name="Requested Items" component={RequestedItemsScreen} />
      <Stack.Screen name="Available Items" component={AvailableItemsScreen} />
      <Stack.Screen name="Profile" component={ProfileScreen} />
+     <Stack.Screen name="Mark" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
