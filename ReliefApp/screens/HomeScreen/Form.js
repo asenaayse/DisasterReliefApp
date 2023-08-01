@@ -79,6 +79,23 @@ const Form = ({ formType , closeModal, auth}) => {
     } catch (error) {
       console.log(error);
     }
+	
+	let locationLat;
+	try{
+	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+	  const lat = response.data.results[0].geometry.location.lat;
+	  locationLat = lat;
+	} catch(error){
+		console.log(error);
+	}
+	let locationLng;
+	try{
+	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+	  const lng = response.data.results[0].geometry.location.lng;
+	  locationLng = lng;
+	} catch(error){
+		console.log(error);
+	}
     
 
    try {
@@ -89,6 +106,8 @@ const Form = ({ formType , closeModal, auth}) => {
       amount: amount,
       location: locationData,
       expirationDate: expirationDate,
+	  locationLat: locationLat,
+	  locationLng: locationLng,
     });
       Alert.alert('Success', 'Your request has been submitted!');
       console.log('Document written with ID: ', docRef.id);
