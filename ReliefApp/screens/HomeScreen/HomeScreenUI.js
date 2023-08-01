@@ -45,7 +45,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
       <TouchableOpacity
        style = {styles.button}
        onPress={() => {
-        navigation.navigate('Map');
+        navigation.navigate('Mark');
   }}
 >
   <Text style = {styles.buttonText}>Go to Map</Text>
