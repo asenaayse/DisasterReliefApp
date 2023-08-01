@@ -5,7 +5,7 @@ import { db } from '../firebase';
 
 const AvailableItemsScreen = ({ navigation }) => {
   const [donations, setAvailableItems] = useState([]);
-
+  const [selectedItem, setSelectedItem] = useState(null);
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'donations'), (snapshot) => {
       const items = snapshot.docs.map((doc) => ({
@@ -38,7 +38,7 @@ const renderItem = ({ item }) => (
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile', { userData: { contact: item.name } })}
+          onPress={() => navigation.navigate('Personal', { userEmail: item.name })}
           >
           <Text style={styles.buttonText}>Go to Profile</Text>
         </TouchableOpacity>
