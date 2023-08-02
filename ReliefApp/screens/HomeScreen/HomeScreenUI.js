@@ -70,6 +70,15 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   <Text style = {styles.buttonText}>Available Items</Text>
 </TouchableOpacity>
 
+<TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Distributor');
+  }}
+>
+  <Text style = {styles.buttonText}>Distributor</Text>
+</TouchableOpacity>
+
 
       
       
