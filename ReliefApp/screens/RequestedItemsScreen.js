@@ -17,18 +17,6 @@ const RequestedItemsScreen = ({ navigation }) => {
 
     return () => unsubscribe();
   }, []);
-/*
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Map', { location: item.location })}>
-
-      <View style={styles.itemContainer}>
-        <Text style={styles.category}>{item.category}</Text>
-        <Text style={styles.subCategory}>{item.subCategory}</Text>
-        <Text style={styles.location}>Location: {item.location}</Text>
-        <Text style={styles.name}>Contact: {item.name}</Text>
-      </View>
-    </TouchableOpacity>
-  );*/
 
 const renderItem = ({ item }) => (
   <View>
@@ -73,19 +61,24 @@ export default RequestedItemsScreen;
 
 const styles = {
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '110%',
+    flex: 1,
+    paddingHorizontal: 10,
+    backgroundColor: '#f5f5f5',
   },
   itemContainer: {
-    borderWidth: 1,
-    borderColor: '#2B2A4C',
     borderRadius: 10,
     padding: 7,
     marginVertical: 5,
     width: '90%',
-    backgroundColor: '#F6F6F6'
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3
   },
   category: {
     fontWeight: 'bold',
@@ -96,7 +89,7 @@ const styles = {
     marginBottom: 3,
   },
   name:{
-    marginBottom: 3,
+    marginBottom: 5,
   },
   location: {
     fontStyle: 'italic',
