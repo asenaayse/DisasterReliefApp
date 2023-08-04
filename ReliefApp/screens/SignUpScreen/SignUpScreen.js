@@ -1,112 +1,3 @@
-/*import React, { useState } from 'react';
-import { Image,View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import { useNavigation } from '@react-navigation/core';
-
-const SignUpScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigation = useNavigation();
-
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log('new user:', user.email);
-        // Save user's name in the Firestore collection 'users'
-        addDoc(collection(db, 'users'), {
-          name: name,
-          email: user.email,
-        })
-          .then(() => {
-            console.log('User information saved in Firestore');
-          })
-          .catch((error) => {
-            console.error('Error saving user information:', error);
-          });
-        // Additional logic after successful sign-up
-        navigation.navigate('Login'); // Navigate back to the login screen after successful sign-up
-      })
-      .catch((error) => {
-        // Handle sign-up error
-        console.log('Sign-up error:', error.message);
-      });
-  };
-
-  return (
-    
-    <View style={styles.container}>
-      <Image source={require('../../assets/ReliefHub.png')} style={styles.logo} />
-    
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    width: '30%',
-    height: 40,
-    borderWidth: 0,
-    borderRadius: 20,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: 'white',
-  },
-  button: {
-    backgroundColor: '#f84242',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 40,
-    marginTop: 20,
-    width: '20%',
-
-  },
-  buttonText: {
-    color: 'black',
-    fontSize: 18,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  logo:{
-    width: 450,
-    height: 450,
-    resizeMode: 'contain',
-    marginBottom: -120,
-},
-});
-
-export default SignUpScreen;
-*/
 import React, { useState } from 'react';
 import { Image, View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -265,6 +156,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 40,
     alignItems: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3,
   },
   buttonText: {
     color: 'black',
