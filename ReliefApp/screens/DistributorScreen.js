@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { collection, getDocs } from 'firebase/firestore';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import axios from 'axios';
+import { auth } from '../firebase';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c';
 
@@ -79,7 +80,17 @@ const DistributorScreen = () => {
     fetchItems();
   }, []);
 
-  const ItemView = ({ item }) => (
+const handleVolunteerClick = async (donationId, needId) => {
+  const userId = auth.currentUser?.email;
+  await setDoc(doc(db, 'transports', `${donationId}-${needId}`), {
+    donationId,
+    needId,
+    volunteerId: userId,
+    status: 'assigned',
+  });
+};
+
+  const ItemView = ({ item }) => ( 
     <View style={styles.itemContainer}>
       <Text style={styles.itemTitle}>Donation: {item.donation.name}</Text>
       <Text style={styles.itemDetail}>Category: {item.donation.category} - {item.need.amount} {item.donation.subCategory}</Text>
@@ -88,6 +99,16 @@ const DistributorScreen = () => {
       <Text style={styles.itemDetail}>Category: {item.need.category} - {item.need.amount} {item.need.subCategory}</Text>
       <Text style={styles.itemDetail}>Location: {item.need.locationName}</Text>
       <Text style={styles.itemDistance}>Distance: {item.distance.toFixed(2)} km</Text>
+        <View style={styles.buttonWrapper}>
+  <TouchableOpacity
+    style={styles.buttonContainer}
+    onPress={() => handleVolunteerClick(item.donation.id, item.need.id)}
+  >
+    <Text style={styles.buttonText}>Become Volunteer</Text>
+  </TouchableOpacity>
+</View>
+
+
     </View>
   );
 
@@ -111,6 +132,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
   },
+  buttonContainer: {
+    width: '50%',
+    backgroundColor: '#f84242',
+    padding: 10,
+    marginVertical: 8,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  buttonWrapper: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  
   itemContainer: {
     width: '90%',
     backgroundColor: '#fff',
