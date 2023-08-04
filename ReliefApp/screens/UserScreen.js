@@ -8,10 +8,10 @@ const UserScreen = () => {
   const [user, setUser] = useState(null);
   
   const fetchTransports = async () => {
-  	const userId = auth.currentUser?.email;
-  	const userDocRef = doc(db, 'users', userId);
-  	const userSnapshot = await getDoc(userDocRef);
-  	setUser(userSnapshot.data());
+    const userId = auth.currentUser?.email;
+    const userDocRef = doc(db, 'users', userId);
+    const userSnapshot = await getDoc(userDocRef);
+    setUser(userSnapshot.data());
 
     const q = query(
       collection(db, 'transports'),
@@ -19,7 +19,49 @@ const UserScreen = () => {
     );
 
     const transportsSnapshot = await getDocs(q);
-    setTransports(transportsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    const transportData = [];
+
+    for(let transportDoc of transportsSnapshot.docs) {
+      const transport = transportDoc.data();
+      const donationDocRef = doc(db, 'donations', transport.donationId);
+      const donationDoc = await getDoc(donationDocRef);
+
+      let donationSubCategory, donationLocation, donationAmount = null;
+
+      if (donationDoc.exists && donationDoc.data()) {
+        donationSubCategory = donationDoc.data().subCategory;
+        donationLocation = donationDoc.data().location;
+        donationAmount = donationDoc.data().amount;
+      } else {
+        console.log(`Donation with ID: ${transport.donationId} does not exist or data is undefined`);
+      }
+
+      const needDocRef = doc(db, 'needs', transport.needId);
+      const needDoc = await getDoc(needDocRef);
+
+      let needSubCategory, needLocation, needAmount = null;
+
+      if (needDoc.exists && needDoc.data()) {
+        needSubCategory = needDoc.data().subCategory;
+        needLocation = needDoc.data().location;
+        needAmount = needDoc.data().amount;
+      } else {
+        console.log(`Need with ID: ${transport.needId} does not exist or data is undefined`);
+      }
+
+      transportData.push({
+        id: transportDoc.id,
+        ...transport,
+        donationSubCategory,
+        donationLocation,
+        donationAmount,
+        needSubCategory,
+        needLocation,
+        needAmount
+      });
+    }
+
+    setTransports(transportData);
   };
 
   useEffect(() => {
@@ -29,65 +71,79 @@ const UserScreen = () => {
   const handleCompleteClick = async (transportId, donationId, needId) => {
     try {
       await updateDoc(doc(db, 'transports', transportId), { status: 'completed' });
-    
-          const userDocRef = doc(db, 'users', auth.currentUser.uid);
-          const userSnapshot = await getDoc(userDocRef);
+      
+      const userDocRef = doc(db, 'users', auth.currentUser.email);
+      const userSnapshot = await getDoc(userDocRef);
 
-          if (userSnapshot.exists()) {
-              await updateDoc(userDocRef, { 
-                  completedTransports: increment(1), 
-                  transportHistory: arrayUnion({
-                      transportId,
-                      donationId,
-                      needId,
-                      completedAt: Timestamp.now(),
-                  })
-              });
-          } else {
-              console.log('User document does not exist!');
-          }
+      if (userSnapshot.exists()) {
+          await updateDoc(userDocRef, { 
+              completedTransports: increment(1), 
+              transportHistory: arrayUnion({
+                  transportId,
+                  donationId,
+                  needId,
+                  completedAt: Timestamp.now(),
+              })
+          });
+      } else {
+          console.log('User document does not exist!');
+      }
 
-          await deleteDoc(doc(db, 'donations', donationId));
-          await deleteDoc(doc(db, 'needs', needId));
-          fetchTransports();
-          } catch (error) {
-        console.error("Error deleting document: ", error);
+      await deleteDoc(doc(db, 'donations', donationId));
+      await deleteDoc(doc(db, 'needs', needId));
+      fetchTransports();
+    } catch (error) {
+      console.error("Error deleting document: ", error);
     }
   };
+  const inProgressTransports = transports.filter(transport => transport.status !== 'completed');
+  const completedTransports = transports.filter(transport => transport.status === 'completed');
 
   return (
-  <View style={styles.container}>
-    <Text style={styles.title}>Completed Transports: {user?.completedTransports}</Text>
-    <Text style={styles.subTitle}>In Progress:</Text>
-    <FlatList
-      data={transports.filter(transport => transport.status !== 'completed')}
-      renderItem={({ item }) => (
-        <View style={styles.itemContainer}>
-          <Text style={styles.itemTitle}>Transport ID: {item.id}</Text>
-          <Text style={styles.itemDetail}>Status: {item.status}</Text>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => handleCompleteClick(item.id, item.donationId, item.needId)}
-          >
-            <Text style={styles.buttonText}>Mark as Completed</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Completed Transports: {user?.completedTransports}</Text>
+      <Text style={styles.subTitle}>In Progress:</Text>
+      {inProgressTransports.length > 0 ? (
+      <FlatList
+        data={inProgressTransports}
+        renderItem={({ item }) => (
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemTitle}>{item.donationAmount} {item.donationSubCategory}</Text>
+            <Text style={styles.itemDetail}>Status: {item.status}</Text>
+            <Text style={styles.itemDetail}>From: {item.donationLocation}</Text>
+            <Text style={styles.itemDetail}>To: {item.needLocation}</Text>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => handleCompleteClick(item.id, item.donationId, item.needId)}
+            >
+              <Text style={styles.buttonText}>Mark as Completed</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
+      ) : (
+        <Text>No active transports.</Text>
       )}
-      keyExtractor={item => item.id}
-    />
 
-    <Text style={styles.subTitle}>Completed:</Text>
-    <FlatList
-      data={transports.filter(transport => transport.status === 'completed')}
+      <Text style={styles.subTitle}>Completed:</Text>
+      {completedTransports.length > 0 ? (
+      <FlatList
+      data={completedTransports}
       renderItem={({ item }) => (
-        <View style={styles.itemContainer}>
-          <Text style={styles.itemTitle}>Transport ID: {item.id}</Text>
-          <Text style={styles.itemDetail}>Status: {item.status}</Text>
-        </View>
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemTitle}>Transport ID: {item.id}</Text>
+            <Text style={styles.itemDetail}>Status: {item.status}</Text>
+            <Text style={styles.itemDetail}>Status: {item.donationLocation}</Text>
+
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
+      ) : (
+        <Text>No completed transports.</Text>
       )}
-      keyExtractor={item => item.id}
-    />
-  </View>
+    </View>
   );
 }
 
