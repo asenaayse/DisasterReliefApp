@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 //import auth from '@react-native-firebase/auth'; // replace with your auth module
 import { useRoute } from '@react-navigation/native';
 import { FontAwesome5  } from '@expo/vector-icons'; // Import the icon you want to use
+import { useNavigation } from '@react-navigation/native';
+
+
 const deviceWidth = Dimensions.get('window').width;
 const PersonalScreen = () => {
   const [donations, setDonations] = useState([]);
@@ -13,7 +16,8 @@ const PersonalScreen = () => {
   const route = useRoute();
   const { userEmail } = route.params || {};
 
-  
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -42,6 +46,9 @@ const PersonalScreen = () => {
   return (
 
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('Message', { userEmail: userEmail })}>
+        <Text>Send Message</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Donations</Text>
       {donations.map((item, index) => (
         <View key={index} style={styles.itemContainer}>

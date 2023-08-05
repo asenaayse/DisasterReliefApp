@@ -37,13 +37,17 @@ const styles = StyleSheet.create({
   slogan: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 50,
+    marginBottom: 50,  
   },
   getStartedButton: {
     backgroundColor: '#FFD600',
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 10,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 3,
   },
   getStartedText: {
     color: 'black',

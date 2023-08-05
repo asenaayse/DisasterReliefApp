@@ -76,8 +76,8 @@ const styles = {
     width: '90%',
     backgroundColor: '#fff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 3
   },
@@ -102,10 +102,14 @@ const styles = {
   button: {
     backgroundColor: '#f84242',
     padding: 7,
-    borderRadius: 10,
+    borderRadius: 20,
     marginVertical: 5,
     flex: 1,
     marginRight: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3,
   },
   buttonText: {
     textAlign: 'center',
