@@ -76,8 +76,8 @@ const styles = {
     width: '90%',
     backgroundColor: '#fff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 3
   },
