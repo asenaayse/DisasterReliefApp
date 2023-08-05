@@ -52,7 +52,7 @@ const UserScreen = () => {
       transportData.push({
         id: transportDoc.id,
         ...transport,
-        donationSubCategory,
+        donationSubCategory, 
         donationLocation,
         donationAmount,
         needSubCategory,
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
+    
   },
   title: {
     fontSize: 24,
@@ -164,10 +165,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 3,
+    width: '70%',
+    justifyContent: 'center', 
   },
   itemTitle: {
     fontSize: 18,
