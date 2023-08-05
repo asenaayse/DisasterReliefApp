@@ -94,6 +94,15 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   <Text style = {styles.buttonText}>Volunteer Couriers</Text>
 </TouchableOpacity>
 
+<TouchableOpacity
+  style={styles.button}
+  onPress={() => {
+    navigation.navigate('MessageList');
+  }}
+>
+  <Text style={styles.buttonText}>Conversations</Text>
+</TouchableOpacity>
+
 
       
       
