@@ -54,12 +54,17 @@ const PersonalScreen = () => {
             color="#f84242" 
         //    onPress={() => navigation.navigate('User')}
           />
-          <Text style={styles.subtitle}>userEmail</Text>
+          <Text style={styles.subtitle}>{userEmail}</Text>
         </View>
       
-      <TouchableOpacity onPress={() => navigation.navigate('Message', { userEmail: userEmail })}>
-      <Text style={styles.buttonMessage}>Send Message</Text>        
-      </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.buttonMessageContainer} 
+          onPress={() => navigation.navigate('Message', { userEmail: userEmail })}
+          activeOpacity={0.7}  // This gives a nice touch feedback when pressing the button
+        >
+          <Text style={styles.buttonMessageText}>Send Message</Text>
+        </TouchableOpacity>
+
       <Text style={styles.header}>Donations</Text>
       {donations.map((item, index) => (
         <View key={index} style={styles.itemContainer}>
@@ -102,17 +107,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     marginTop: 16,
     marginBottom: 16,
-    color: 'black',
+    paddingHorizontal: 40,
+    color: 'white',
     backgroundColor: '#f84242',
     borderRadius: 40,
- //   marginRight: 580,
     borderColor: 'black',
-    padding: 20,
-    width: deviceWidth > 800 ? 250 : '50%',
+    width: deviceWidth > 800 ? 250 : '40%',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+    alignItems: 'center' ,
+
   },
   itemContainer: {
     flexDirection: 'row',
@@ -122,19 +136,7 @@ const styles = StyleSheet.create({
   itemText: {
     marginLeft: 16,
     padding: 4,
-  },
-  buttonMessage: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 16,
-    color: 'black',
-    backgroundColor: '#f84242',
-    borderRadius: 40,
-  //  marginRight: 580,
-    borderColor: 'black',
-    padding: 20,
-    width: deviceWidth > 800 ? 250 : '50%',
+    fontSize: 16,
   },
   iconWithSubtitle: {
     marginHorizontal: 15,
@@ -144,7 +146,33 @@ const styles = StyleSheet.create({
     marginTop: 5, 
     fontSize: 16, 
     color: '#f84242'
-  }
+  },
+  buttonMessageContainer: {
+    backgroundColor: '#f84242',
+    borderRadius: 25,   
+    paddingVertical: 15, 
+    paddingHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2.60,
+    elevation: 4,
+    alignItems: 'center', 
+    justifyContent: 'center',
+    marginTop: 16, 
+    marginBottom: 16, 
+
+  },
+  buttonMessageText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',  
+    alignItems: 'center',
+
+  },
   
 });
 
