@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
+import CaseStudyScreen from './screens/CaseStudyScreen/CaseStudyScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import GoogleMapsScreen from './screens/GoogleMapsScreen/GoogleMapsScreen';
@@ -31,6 +32,7 @@ export default function App() {
      <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
      <Stack.Screen options={{ headerShown: false }} name="SignUpScreen" component={SignUpScreen} />
      <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+     <Stack.Screen options={{ headerShown: false }} name="CaseStudy" component={CaseStudyScreen} />
      <Stack.Screen name="Map"component={GoogleMapsScreen}/> 
      <Stack.Screen name="Requested Items" component={RequestedItemsScreen} />
      <Stack.Screen name="Available Items" component={AvailableItemsScreen} />
@@ -40,8 +42,7 @@ export default function App() {
      <Stack.Screen name="Distributor" component={DistributorScreen} />
      <Stack.Screen name="Message" component={ChatScreen} />
      <Stack.Screen name="MessageList" component={MessageListScreen} />
-
-
+     
       </Stack.Navigator>
     </NavigationContainer>
   );

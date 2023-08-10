@@ -2,73 +2,80 @@ import { KeyboardAvoidingView, Image, StyleSheet, Text, TextInput, TouchableOpac
 import React, {useState} from 'react'
 import { Entypo } from '@expo/vector-icons'; 
 
-
 const deviceWidth = Dimensions.get('window').width;
 
-const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, clickSignin}) => {
+const CaseStudyScreenUI = ({setNorth, setSouth, setWest, setEast, clickGetNeeds, areaNeeds}) => {
     
     return (
         <KeyboardAvoidingView
         style={styles.container}
         behavior='padding'
         >
-            <Image source={require('../../assets/ReliefHub.png')} style={styles.logo} />
-
-            <View style={styles.inputContainer}>
-                <View style={styles.inputIcon}>
-                     <Entypo name="mail" size={24} color="black" />
-                </View>
-                <TextInput
-                    placeholder='Email'
-                    value = {email}
-                    onChangeText={text => setEmail(text)}
-                    style={styles.input}
-                />
-             </View>
+            {/* Get the coordinates for the area */}
              <View style={styles.inputContainer}>
-                <View style={styles.inputIcon}>
-                     <Entypo name="lock" size={24} color="black" />
-                </View>
+             <Text>Enter Coordinates for Area Corners</Text>
                 <TextInput
-                    placeholder='Password'
-                    value = {password}
-                    onChangeText={text => setPassword(text)}
-                    style={styles.input}
-                    secureTextEntry={true}
+                style={styles.input}
+                placeholder="North Latitude"
+                keyboardType="numeric"
+                onChangeText={text => setNorth(text)}
                 />
-            </View>
-            <View style={styles.buttonContainer}>
-                
-                <TouchableOpacity
-                    onPress={clickSignin}
-                    style={styles.button}
-                >
-                    <Text style={styles.buttonText}>Sign in</Text>
-                </TouchableOpacity>
+                <TextInput
+                style={styles.input}
+                placeholder="South Latitude"
+                keyboardType="numeric"
+                onChangeText={text => setSouth(text)}
+                />
+                <TextInput
+                style={styles.input}
+                placeholder="West Longitude"
+                keyboardType="numeric"
+                onChangeText={text => setWest(text)}
+                />
+                <TextInput
+                style={styles.input}
+                placeholder="East Longitude"
+                keyboardType="numeric"
+                onChangeText={text => setEast(text)}
+                />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={clickGetNeeds}
+                        style={styles.button}
+                    >
+                        <Text style={styles.buttonText}>Get area needs</Text>
+                    </TouchableOpacity>
+                    <Text style= {styles.text1}>Estimated coordinates for Maraş earthquake case study: N: 39, S: 36, W:35, E:41</Text>
+                </View>
+             </View>
 
-                <Text style= {styles.text1}>Don't you have an account ?</Text>
-                <TouchableOpacity onPress={clickSignUp}> 
-                    <Text style={styles.signuptext}>Sign Up!</Text>
-                </TouchableOpacity>
+            {/* Show the needs we get from that area */}
+            <View style={styles.resultsContainer}>
+                {areaNeeds.map((item, index) => (
+                    <Text key={index}>{JSON.stringify(item)}</Text>
+                ))}
             </View>
+           
         </KeyboardAvoidingView>
     )
 }
 
-export default LoginScreenUI
+export default CaseStudyScreenUI
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: -120,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start', 
+        marginTop: 50, 
+        
 
     },
     inputContainer: {
         width: deviceWidth > 800 ? 250 : '50%',
-        flexDirection: 'row',
+        //flexDirection: 'row',
         marginTop: 0,
+        marginLeft: 50,
 
     },
     logo:{
@@ -127,6 +134,7 @@ const styles = StyleSheet.create({
         fontweight: '700',
         fontSize: 16,
         marginTop: 15,
+        marginLeft: 25,
     },
     signuptext: {
         color: 'black',

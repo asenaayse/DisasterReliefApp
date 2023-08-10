@@ -103,6 +103,14 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   <Text style={styles.buttonText}>Conversations</Text>
 </TouchableOpacity>
 
+<TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('CaseStudy');
+  }}
+>
+  <Text style = {styles.buttonText}>Conduct a Case Study</Text>
+</TouchableOpacity>
 
       
       
