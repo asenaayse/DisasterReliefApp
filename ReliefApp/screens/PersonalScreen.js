@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 //import auth from '@react-native-firebase/auth'; // replace with your auth module
 import { useRoute } from '@react-navigation/native';
 import { FontAwesome5  } from '@expo/vector-icons'; // Import the icon you want to use
+import { useNavigation } from '@react-navigation/native';
+
+
 const deviceWidth = Dimensions.get('window').width;
 const PersonalScreen = () => {
   const [donations, setDonations] = useState([]);
@@ -13,7 +16,8 @@ const PersonalScreen = () => {
   const route = useRoute();
   const { userEmail } = route.params || {};
 
-  
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -42,6 +46,20 @@ const PersonalScreen = () => {
   return (
 
     <View style={styles.container}>
+
+      <View style={styles.iconWithSubtitle}>
+          <FontAwesome5 
+            name="user-circle" 
+            size={100} 
+            color="#f84242" 
+        //    onPress={() => navigation.navigate('User')}
+          />
+          <Text style={styles.subtitle}>userEmail</Text>
+        </View>
+      
+      <TouchableOpacity onPress={() => navigation.navigate('Message', { userEmail: userEmail })}>
+      <Text style={styles.buttonMessage}>Send Message</Text>        
+      </TouchableOpacity>
       <Text style={styles.header}>Donations</Text>
       {donations.map((item, index) => (
         <View key={index} style={styles.itemContainer}>
@@ -71,7 +89,6 @@ const getIconName = category => {
       return 'warehouse';
     case 'Heating':
         return 'fire';
-    // Add more cases for other categories and their corresponding icons
     default:
       return 'ios-information-circle';
   }
@@ -81,7 +98,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    
+    alignItems: 'center' ,
+    justifyContent: 'center',
   },
   header: {
     fontSize: 24,
@@ -91,7 +109,7 @@ const styles = StyleSheet.create({
     color: 'black',
     backgroundColor: '#f84242',
     borderRadius: 40,
-    marginRight: 580,
+ //   marginRight: 580,
     borderColor: 'black',
     padding: 20,
     width: deviceWidth > 800 ? 250 : '50%',
@@ -99,12 +117,35 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 16,
+  //  marginLeft: 16,
   },
   itemText: {
     marginLeft: 16,
     padding: 4,
   },
+  buttonMessage: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 16,
+    color: 'black',
+    backgroundColor: '#f84242',
+    borderRadius: 40,
+  //  marginRight: 580,
+    borderColor: 'black',
+    padding: 20,
+    width: deviceWidth > 800 ? 250 : '50%',
+  },
+  iconWithSubtitle: {
+    marginHorizontal: 15,
+    alignItems: 'center' 
+  },
+  subtitle: {
+    marginTop: 5, 
+    fontSize: 16, 
+    color: '#f84242'
+  }
+  
 });
 
 export default PersonalScreen;

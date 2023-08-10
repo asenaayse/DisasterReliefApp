@@ -62,19 +62,24 @@ export default AvailableItemsScreen;
 
 const styles = {
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '110%',
+    flex: 1,
+    paddingHorizontal: 10,
+    backgroundColor: '#f5f5f5',
   },
   itemContainer: {
-    borderWidth: 1,
-    borderColor: '#2B2A4C',
     borderRadius: 10,
     padding: 7,
     marginVertical: 5,
     width: '90%',
-    backgroundColor: '#F6F6F6'
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 3
   },
   category: {
     fontWeight: 'bold',
@@ -85,7 +90,7 @@ const styles = {
     marginBottom: 3,
   },
   name:{
-    marginBottom: 3,
+    marginBottom: 5,
   },
   location: {
     fontStyle: 'italic',
@@ -97,10 +102,14 @@ const styles = {
   button: {
     backgroundColor: '#f84242',
     padding: 7,
-    borderRadius: 10,
+    borderRadius: 20,
     marginVertical: 5,
     flex: 1,
     marginRight: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3,
   },
   buttonText: {
     textAlign: 'center',

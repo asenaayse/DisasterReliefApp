@@ -104,6 +104,10 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 40,
         alignItems: 'center',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+        elevation: 3,
     },
     buttonOutline: {
         backgroundColor: '#F6F6F6',

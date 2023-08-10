@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions } from 'rea
 import Form from './Form'
 import React, {useState} from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'; // https://icons.expo.fyi/ 
+import { Button, Header, Icon, Card, Divider } from 'react-native-elements';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -12,12 +13,48 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
 
 
   return (
+  <>  
+    <Header
+        centerComponent={{ text: `Welcome, ${auth.currentUser?.email}`, style: { color: '#fff' } }}
+        rightComponent={{ icon: 'logout', color: '#fff', onPress: clickSignOut }}
+        containerStyle={{ backgroundColor: '#f84242' }}
+      />
 
     <View style={styles.container}>
 
-      <FontAwesome5 name="hands-helping" size={100} color="#f84242" />
+      <FontAwesome5 name="hands-helping" size={150} color="#f84242" />
+      
+      <View style={styles.iconContainer}>
+        <View style={styles.iconWithSubtitle}>
+          <FontAwesome5 
+            name="user-circle" 
+            size={40} 
+            color="#f84242" 
+            onPress={() => navigation.navigate('User')}
+          />
+          <Text style={styles.subtitle}>Profile</Text>
+        </View>
+        
+        <View style={styles.iconWithSubtitle}>
+          <FontAwesome5 
+            name="envelope" 
+            size={40} 
+            color="#f84242" 
+            onPress={() => navigation.navigate('MessageList')}
+          />
+          <Text style={styles.subtitle}>Messages</Text>
+        </View>
 
-      <Text>Welcome {auth.currentUser?.email} </Text>
+        <View style={styles.iconWithSubtitle}>
+          <FontAwesome5 
+            name="map" 
+            size={40} 
+            color="#f84242" 
+            onPress={() => navigation.navigate('Mark')}
+          />
+          <Text style={styles.subtitle}>Map</Text>
+        </View>
+      </View>
 
 
       <TouchableOpacity
@@ -28,7 +65,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
         }}
         
       >
-        <Text style = {styles.buttonText}>I need something...</Text>
+        <Text style = {styles.buttonText}>Make a Request</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -38,18 +75,9 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
           setIsModalVisible(true);
         }}
       >
-        <Text style = {styles.buttonText}>I want to donate...</Text>
+        <Text style = {styles.buttonText}>Make a Donation</Text>
 
       </TouchableOpacity>
-
-      <TouchableOpacity
-       style = {styles.button}
-       onPress={() => {
-        navigation.navigate('Mark');
-  }}
->
-  <Text style = {styles.buttonText}>Go to Map</Text>
-</TouchableOpacity>
 
 
 <TouchableOpacity
@@ -70,7 +98,14 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   <Text style = {styles.buttonText}>Available Items</Text>
 </TouchableOpacity>
 
-
+<TouchableOpacity
+       style = {styles.button}
+       onPress={() => {
+        navigation.navigate('Distributor');
+  }}
+>
+  <Text style = {styles.buttonText}>Volunteer Couriers</Text>
+</TouchableOpacity>
       
       
       <Modal
@@ -85,19 +120,10 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
           </View>
       </View>
       </Modal>
-
-
-
-
-      <TouchableOpacity
-        style = {styles.signOutButton}
-        onPress = {clickSignOut}
-      >
-        <Text style = {styles.signOutButtonText}>Sign out</Text>
-
-      </TouchableOpacity>
       
     </View>
+
+    </>
   )
 }
 
@@ -108,8 +134,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
-  button: {
+  button: { 
     backgroundColor: '#f84242',
     width: '60%',
     padding: 15,
@@ -118,6 +145,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderColor: 'black',
     width: deviceWidth > 800 ? 250 : '60%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3, 
+    shadowRadius: 1,
+    elevation: 3, 
   },
   buttonText: {
     color: 'black',
@@ -157,6 +189,22 @@ modalView: {
     width: deviceWidth * 0.5, 
     height: '80%',
 },
+iconContainer: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginVertical: 20
+},
+iconWithSubtitle: {
+  marginHorizontal: 15,
+  alignItems: 'center' 
+},
+subtitle: {
+  marginTop: 5, 
+  fontSize: 12, 
+  color: '#f84242'
+}
 
 
 })
+
