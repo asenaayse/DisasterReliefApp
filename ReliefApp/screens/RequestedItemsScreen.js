@@ -2,9 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import { Picker } from '@react-native-picker/picker';
+
+const categories = {
+  Medical: ['Painkiller', 'Bandage'],
+  Heating: ['Blanket', 'Electric_Heater'],
+  Shelter: ['Tent', 'Container'],
+  Nutrition: ['Food', 'Water']
+};
 
 const RequestedItemsScreen = ({ navigation }) => {
   const [needs, setRequestedItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'needs'), (snapshot) => {
@@ -17,6 +27,15 @@ const RequestedItemsScreen = ({ navigation }) => {
 
     return () => unsubscribe();
   }, []);
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    setSelectedSubCategory(""); 
+  };
+  const filteredItems = needs.filter(item => 
+    (!selectedCategory || item.category === selectedCategory) &&
+    (!selectedSubCategory || item.subCategory === selectedSubCategory)
+  );
 
 const renderItem = ({ item }) => (
   <View>
@@ -48,31 +67,66 @@ const renderItem = ({ item }) => (
 
   return (
     <View style={styles.container}>
+      <Picker 
+        style={styles.pickerStyle}
+        selectedValue={selectedCategory}
+        onValueChange={(itemValue) => handleCategoryChange(itemValue)
+       }
+      >
+        <Picker.Item label="Select Category" value="" />
+        {Object.keys(categories).map((cat) => <Picker.Item key={cat} label={cat} value={cat} />)}
+      </Picker>
+
+      
+      <Picker
+        style={styles.pickerStyle}
+        selectedValue={selectedSubCategory}
+        onValueChange={(itemValue) => setSelectedSubCategory(itemValue)}
+      >
+        <Picker.Item label="Select Sub-Category" value="" />
+        {selectedCategory && categories[selectedCategory] && categories[selectedCategory].map((subCat) => 
+          <Picker.Item key={subCat} label={subCat} value={subCat} />
+        )}
+      </Picker>
+
+      
+
       <FlatList
-        data={needs}
+        data={filteredItems}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
     </View>
   );
+
 };
 
 export default RequestedItemsScreen;
 
 const styles = {
   container: {
-    justifyContent: 'center',
     alignItems: 'center',
-    width: '110%',
     flex: 1,
-    paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
+  },
+  pickerStyle: {
+    height: 25,
+    width: '70%',
+    backgroundColor: '#f8f8f8',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    marginVertical: 5,
+  },
+  filterLabel: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10,
   },
   itemContainer: {
     borderRadius: 10,
     padding: 7,
     marginVertical: 5,
-    width: '90%',
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 2 },
