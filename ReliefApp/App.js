@@ -40,7 +40,8 @@ export default function App() {
      <Stack.Screen name="Distributor" component={DistributorScreen} />
      <Stack.Screen name="Message" component={ChatScreen} />
      <Stack.Screen name="MessageList" component={MessageListScreen} />
-     
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

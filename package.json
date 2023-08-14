@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-native-modal": "^13.0.1",
-    "react-native-web": "^0.19.4"
-  }
-}

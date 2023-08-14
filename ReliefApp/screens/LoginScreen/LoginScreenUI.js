@@ -38,14 +38,12 @@ const LoginScreenUI = ({email, setEmail, password, setPassword, clickSignUp, cli
                 />
             </View>
             <View style={styles.buttonContainer}>
-                
                 <TouchableOpacity
                     onPress={clickSignin}
                     style={styles.button}
                 >
                     <Text style={styles.buttonText}>Sign in</Text>
                 </TouchableOpacity>
-
                 <Text style= {styles.text1}>Don't you have an account ?</Text>
                 <TouchableOpacity onPress={clickSignUp}> 
                     <Text style={styles.signuptext}>Sign Up!</Text>
