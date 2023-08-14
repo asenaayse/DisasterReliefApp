@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Picker } from '@react-native-picker/picker';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const categories = {
   Medical: ['Painkiller', 'Bandage'],
@@ -65,39 +65,29 @@ const renderItem = ({ item }) => (
   </View>
 );
 
-  return (
-    <View style={styles.container}>
-      <Picker 
-        style={styles.pickerStyle}
-        selectedValue={selectedCategory}
-        onValueChange={(itemValue) => handleCategoryChange(itemValue)
-       }
-      >
-        <Picker.Item label="Select Category" value="" />
-        {Object.keys(categories).map((cat) => <Picker.Item key={cat} label={cat} value={cat} />)}
-      </Picker>
-
-      
-      <Picker
-        style={styles.pickerStyle}
-        selectedValue={selectedSubCategory}
-        onValueChange={(itemValue) => setSelectedSubCategory(itemValue)}
-      >
-        <Picker.Item label="Select Sub-Category" value="" />
-        {selectedCategory && categories[selectedCategory] && categories[selectedCategory].map((subCat) => 
-          <Picker.Item key={subCat} label={subCat} value={subCat} />
-        )}
-      </Picker>
-
-      
-
-      <FlatList
-        data={filteredItems}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+return (
+  <View style={styles.container}>
+    <ModalDropdown
+        options={Object.keys(categories)}
+        defaultValue={selectedCategory || "Select a category"}
+        onSelect={(index, value) => handleCategoryChange(value)}
+        textStyle={{ fontSize: 16 }}
+        dropdownStyle={{ width: '80%' }}
       />
-    </View>
-  );
+      <ModalDropdown
+        options={selectedCategory ? categories[selectedCategory] : []}
+        defaultValue={selectedSubCategory || "Select a sub-category"}
+        onSelect={(index, value) => setSelectedSubCategory(value)}
+        textStyle={{ fontSize: 16 }}
+        dropdownStyle={{ width: '80%' }}
+      />
+    <FlatList
+      data={filteredItems}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+    />
+  </View>
+);
 
 };
 
@@ -106,17 +96,15 @@ export default RequestedItemsScreen;
 const styles = {
   container: {
     alignItems: 'center',
-    flex: 1,
+    flex: 1, 
     backgroundColor: '#f5f5f5',
   },
   pickerStyle: {
-    height: 25,
-    width: '70%',
-    backgroundColor: '#f8f8f8',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
+    height: 50,
+    width: '80%',
     marginVertical: 5,
+    zIndex: 2000,
+    elevation: 2000,
   },
   filterLabel: {
     fontWeight: 'bold',
