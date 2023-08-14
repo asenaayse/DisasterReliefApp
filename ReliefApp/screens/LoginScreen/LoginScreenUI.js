@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     },
     text1:{
         color: 'black',
-        fontweight: '700',
+        fontWeight: '400',
         fontSize: 16,
         marginTop: 15,
     },
