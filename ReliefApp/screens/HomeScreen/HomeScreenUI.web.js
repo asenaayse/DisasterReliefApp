@@ -16,11 +16,11 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   const carouselItems = [
     {
       image: require('../../assets/slide1.png'), // or { uri: 'https://link_to_image1.jpg' }
-      navigateTo: "Mark"
+      navigateTo: "Home"
     },
     {
       image: require('../../assets/slide2.png'), // or { uri: 'https://link_to_image2.jpg' }
-      navigateTo: "Mark"
+      navigateTo: "Distributor"
     }
     // ... add more items as needed
 ];
