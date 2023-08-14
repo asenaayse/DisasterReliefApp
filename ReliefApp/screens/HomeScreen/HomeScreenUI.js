@@ -222,8 +222,8 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const images = [
-    { src: require('../../assets/slide1.png'), link: 'Screen1' },
-    { src: require('../../assets/slide2.png'), link: 'Screen2' },
+    { src: require('../../assets/slide1.png'), link: 'Home' },
+    { src: require('../../assets/slide2.png'), link: 'Distributor' },
     // ... 
   ];
 
