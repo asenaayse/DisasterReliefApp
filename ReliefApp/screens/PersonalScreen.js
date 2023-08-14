@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f84242',
     borderRadius: 40,
     borderColor: 'black',
-    width: deviceWidth > 800 ? 250 : '40%',
+    width: deviceWidth > 800 ? 250 : '50%',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
