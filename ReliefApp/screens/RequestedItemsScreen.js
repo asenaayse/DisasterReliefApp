@@ -68,19 +68,23 @@ const renderItem = ({ item }) => (
 return (
   <View style={styles.container}>
     <ModalDropdown
-        options={Object.keys(categories)}
-        defaultValue={selectedCategory || "Select a category"}
-        onSelect={(index, value) => handleCategoryChange(value)}
-        textStyle={{ fontSize: 16 }}
-        dropdownStyle={{ width: '80%' }}
-      />
-      <ModalDropdown
-        options={selectedCategory ? categories[selectedCategory] : []}
-        defaultValue={selectedSubCategory || "Select a sub-category"}
-        onSelect={(index, value) => setSelectedSubCategory(value)}
-        textStyle={{ fontSize: 16 }}
-        dropdownStyle={{ width: '80%' }}
-      />
+          options={Object.keys(categories)}
+          defaultValue={selectedCategory || "Select a category"}
+          onSelect={(index, value) => handleCategoryChange(value)}
+          textStyle={styles.textStyle}
+          dropdownStyle={styles.dropdownStyle}
+          containerStyle={styles.pickerStyle}
+
+          />
+        <ModalDropdown
+          options={selectedCategory ? categories[selectedCategory] : []}
+          defaultValue={selectedSubCategory || "Select a sub-category"}
+          onSelect={(index, value) => setSelectedSubCategory(value)}
+          textStyle={styles.textStyle}
+          dropdownStyle={styles.dropdownStyle}
+          containerStyle={styles.pickerStyle}
+
+          />
     <FlatList
       data={filteredItems}
       renderItem={renderItem}
@@ -102,10 +106,50 @@ const styles = {
   pickerStyle: {
     height: 50,
     width: '80%',
-    marginVertical: 5,
-    zIndex: 2000,
-    elevation: 2000,
-  },
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+
+},
+textStyle: {
+    fontSize: 18,
+    color: '#333',
+    marginTop: 10,
+    borderColor: 'white',
+    borderWidth: '3',
+    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    padding: 5,
+    
+},
+dropdownStyle: {
+    padding: 20,
+    width: '30%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    marginTop: -5,
+    shadowColor: "black",
+    shadowOffset: {
+        width: 2,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
   filterLabel: {
     fontWeight: 'bold',
     fontSize: 18,
