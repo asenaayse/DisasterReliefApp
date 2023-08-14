@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import CaseStudyScreenUI from './CaseStudyScreenUI';
 import { useNavigation } from '@react-navigation/core';
 import { db } from '../../firebase';
+import { collection, query, onSnapshot } from 'firebase/firestore';
 
 const CaseStudyScreen = () => {
     const [N, setNorth] = useState('');
@@ -16,9 +17,9 @@ const CaseStudyScreen = () => {
         console.log('W:', W);
         console.log('E:', E);
 
-
         try {
-            const collectionRef = db.collection('needs');
+            //const collectionRef = db.collection('needs');
+            const collectionRef = getDocs(collection(db, 'needs'));
             // get needs only between the given coordinates
             const querySnapshot = await collectionRef
             // Maraş case: N: 39, S: 36, W:35, E:40.5
