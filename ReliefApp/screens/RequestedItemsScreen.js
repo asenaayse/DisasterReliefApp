@@ -2,9 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import ModalDropdown from 'react-native-modal-dropdown';
+
+const categories = {
+  Medical: ['Painkiller', 'Bandage'],
+  Heating: ['Blanket', 'Electric_Heater'],
+  Shelter: ['Tent', 'Container'],
+  Nutrition: ['Food', 'Water']
+};
 
 const RequestedItemsScreen = ({ navigation }) => {
   const [needs, setRequestedItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'needs'), (snapshot) => {
@@ -17,6 +27,15 @@ const RequestedItemsScreen = ({ navigation }) => {
 
     return () => unsubscribe();
   }, []);
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    setSelectedSubCategory(""); 
+  };
+  const filteredItems = needs.filter(item => 
+    (!selectedCategory || item.category === selectedCategory) &&
+    (!selectedSubCategory || item.subCategory === selectedSubCategory)
+  );
 
 const renderItem = ({ item }) => (
   <View>
@@ -46,21 +65,96 @@ const renderItem = ({ item }) => (
   </View>
 );
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={needs}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
-  );
+return (
+  <View style={styles.container}>
+    <ModalDropdown
+          options={Object.keys(categories)}
+          defaultValue={selectedCategory || "Select a category"}
+          onSelect={(index, value) => handleCategoryChange(value)}
+          textStyle={styles.textStyle}
+          dropdownStyle={styles.dropdownStyle}
+          containerStyle={styles.pickerStyle}
+
+          />
+        <ModalDropdown
+          options={selectedCategory ? categories[selectedCategory] : []}
+          defaultValue={selectedSubCategory || "Select a sub-category"}
+          onSelect={(index, value) => setSelectedSubCategory(value)}
+          textStyle={styles.textStyle}
+          dropdownStyle={styles.dropdownStyle}
+          containerStyle={styles.pickerStyle}
+
+          />
+    <FlatList
+      data={filteredItems}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+    />
+  </View>
+);
+
 };
 
 export default RequestedItemsScreen;
 
 const styles = {
   container: {
+    alignItems: 'center',
+    flex: 1, 
+    backgroundColor: '#f5f5f5',
+  },
+  pickerStyle: {
+    height: 50,
+    width: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+
+},
+textStyle: {
+    fontSize: 18,
+    color: '#333',
+    marginTop: 10,
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    padding: 5,
+    
+},
+dropdownStyle: {
+    padding: 20,
+    width: '30%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    marginTop: -5,
+    shadowColor: "black",
+    shadowOffset: {
+        width: 2,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
+  filterLabel: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10,
+  },
     justifyContent: 'center',
     alignItems: 'center',
     width: '110%',

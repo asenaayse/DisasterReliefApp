@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontweight: '700',
+    fontWeight: '700',
     fontSize: 16,
     marginTop: 15,
   },
   text1:{
     color: 'black',
-    fontweight: '700',
+    fontWeight: '400',
     fontSize: 16,
     marginTop: 15,
   },

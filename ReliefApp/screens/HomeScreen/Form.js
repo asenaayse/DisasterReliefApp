@@ -70,7 +70,7 @@ const Form = ({ formType , closeModal, auth}) => {
 
     let locationData;
     try {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY`);
    // const lat = response.data.results[0].geometry.location.lat
    // const lng = response.data.results[0].geometry.location.lng;
    // locationData = lat + ',' + lng + longName ;
@@ -82,7 +82,7 @@ const Form = ({ formType , closeModal, auth}) => {
 	
 	let locationLat;
 	try{
-	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY`);
 	  const lat = response.data.results[0].geometry.location.lat;
 	  locationLat = lat;
 	} catch(error){
@@ -90,7 +90,7 @@ const Form = ({ formType , closeModal, auth}) => {
 	}
 	let locationLng;
 	try{
-	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`);
+	  const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY`);
 	  const lng = response.data.results[0].geometry.location.lng;
 	  locationLng = lng;
 	} catch(error){

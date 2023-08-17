@@ -21,7 +21,7 @@ const GoogleMapsScreenUI = ({ location }) => {
   }, [location]);
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c">
+    <LoadScript googleMapsApiKey="AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY">
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={mapCenter}

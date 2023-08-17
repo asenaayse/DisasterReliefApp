@@ -101,6 +101,7 @@ const UserScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Completed Transports {user?.completedTransports}</Text>
       <Text style={styles.title}>Completed Transports: {user?.completedTransports}</Text>
       <Text style={styles.subTitle}>In Progress:</Text>
       {inProgressTransports.length > 0 ? (
@@ -161,6 +162,9 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: '#fff',
+    padding: 15,
+    marginVertical: 8,
+    borderRadius: 20,
     padding: 10,
     marginVertical: 8,
     borderRadius: 10,
@@ -169,6 +173,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 3,
+    width: '80%',
     width: '70%',
     justifyContent: 'center', 
   },
