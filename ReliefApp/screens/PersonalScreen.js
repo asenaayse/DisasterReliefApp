@@ -62,6 +62,9 @@ const PersonalScreen = () => {
           <Text style={styles.buttonMessageText}>Send Message</Text>
         </TouchableOpacity>
 
+      <TouchableOpacity onPress={() => navigation.navigate('Message', { userEmail: userEmail })}>
+        <Text>Send Message</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Donations</Text>
       {donations.map((item, index) => (
         <View key={index} style={styles.itemContainer}>

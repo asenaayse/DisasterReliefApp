@@ -129,11 +129,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '110%',
     flex: 1,
-   // paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
   },
   buttonContainer: {
     width: '70%',
+    paddingHorizontal: 10,
+    backgroundColor: '#f5f5f5',
+  },
+  buttonContainer: {
+    width: '50%',
     backgroundColor: '#f84242',
     padding: 10,
     marginVertical: 8,

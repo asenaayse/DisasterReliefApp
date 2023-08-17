@@ -15,7 +15,7 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
   const images = [
     { src: require('../../assets/slide1.png'), link: 'Home' },
     { src: require('../../assets/slide2.png'), link: 'Distributor' },
-    // ... 
+    
   ];
 
   const _renderItem = ({item, index}) => {
@@ -245,14 +245,14 @@ subtitle: {
   color: '#f84242'
 },
 buttonContent: {
-  flexDirection: 'row',  // To display child components in a row
-  alignItems: 'center',  // To vertically align children in the center
-  justifyContent: 'center',  // To horizontally align children in the center
+  flexDirection: 'row',  
+  alignItems: 'center', 
+  justifyContent: 'center',  
 },
 buttonIcon: {
-  width: 35,   // Or any desired width
-  height: 35,  // Or any desired height
-  marginRight: '5%',  // To add some spacing between the icon and the text
+  width: 35,   
+  height: 35, 
+  marginRight: '5%', 
 },
 
 
