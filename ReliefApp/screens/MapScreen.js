@@ -80,7 +80,7 @@ const MapScreen = () => {
         initialRegion={{
             latitude: 41.043029,
             longitude: 29.030063,
-            latitudeDelta: 0.5,  // This defines the zoom level. Smaller values are more zoomed in.
+            latitudeDelta: 0.5,  
             longitudeDelta: 0.5, 
         }}
     
@@ -126,32 +126,35 @@ const MapScreen = () => {
 
 const styles = StyleSheet.create({
     callout: {
-        width: 200, // Ensures the callout isn't too wide or too narrow
+        width: 200,
         padding: 10,
-        borderRadius: 10, // Rounded corners
-        backgroundColor: 'white', // Background color for distinction
-        shadowColor: '#000', // Shadow for depth effect
+        borderRadius: 20,
+        backgroundColor: 'white', 
+        shadowColor: '#000', 
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.2, // Adjust to your liking
+        shadowOpacity: 0.2, 
         shadowRadius: 3,
-        elevation: 3, // for Android elevation
+        elevation: 3, 
     },
     calloutText: {
-        marginBottom: 5, // Spacing between text elements
-        color: '#333', // Slightly subdued text color
+        marginBottom: 5, 
+        color: '#333', 
+        fontWeight:'bold',
     },
     button: {
-        marginTop: 5, // Spacing between buttons
-        padding: 5, // Padding for clickable area
-        borderRadius: 5, // Rounded corners for buttons
-        backgroundColor: '#007BFF', // A common blue color for CTAs
+        marginTop: 5, 
+        padding: 5,
+        borderRadius: 25, 
+        backgroundColor: 'red', 
     },
     buttonText: {
-        color: 'white', // Text color for the buttons
-        textAlign: 'center', // Centering text inside the button
+        color: 'white', 
+        textAlign: 'center', 
+        fontSize: 16,
+        fontWeight:'bold',
     },
 
 });
