@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
-//import auth from '@react-native-firebase/auth'; // replace with your auth module
 import { useRoute } from '@react-navigation/native';
-import { FontAwesome5  } from '@expo/vector-icons'; // Import the icon you want to use
+import { FontAwesome5  } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -24,16 +23,14 @@ const PersonalScreen = () => {
     //  const user = auth().currentUser;
       if (userEmail) {
         
-        // Fetch the user's donations
         const donationsSnapshot = await getDocs(query(
           collection(db, 'donations'),
           where('name', '==', userEmail),
         ));
         setDonations(donationsSnapshot.docs.map(doc => doc.data()));
 
-        // Fetch the user's requests
         const requestsSnapshot = await getDocs(query(
-          collection(db, 'needs'), // assuming 'needs' is your requests collection
+          collection(db, 'needs'), 
           where('name', '==', userEmail),
         ));
         setRequests(requestsSnapshot.docs.map(doc => doc.data()));
@@ -60,7 +57,7 @@ const PersonalScreen = () => {
         <TouchableOpacity 
           style={styles.buttonMessageContainer} 
           onPress={() => navigation.navigate('Message', { userEmail: userEmail })}
-          activeOpacity={0.7}  // This gives a nice touch feedback when pressing the button
+          activeOpacity={0.7}  
         >
           <Text style={styles.buttonMessageText}>Send Message</Text>
         </TouchableOpacity>

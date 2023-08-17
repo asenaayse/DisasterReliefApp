@@ -70,7 +70,6 @@ const renderItem = ({ item }) => (
          <Picker 
         style={styles.pickerStyle}
         selectedValue={selectedCategory}
-       // onValueChange={(itemValue) => handleCategoryChange(itemValue)}
        onValueChange={(itemValue) => setSelectedCategory(itemValue)}
 
       >
