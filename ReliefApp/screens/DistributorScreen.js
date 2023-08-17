@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import axios from 'axios';
 import { auth } from '../firebase';
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c';
+const GOOGLE_MAPS_API_KEY = 'AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY';
 
 function haversine(lat1, lon1, lat2, lon2) {
   var radlat1 = Math.PI * lat1/180;
@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '110%',
     flex: 1,
-    paddingHorizontal: 10,
+   // paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
   },
   buttonContainer: {
-    width: '50%',
+    width: '70%',
     backgroundColor: '#f84242',
     padding: 10,
     marginVertical: 8,

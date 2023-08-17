@@ -128,7 +128,7 @@ textStyle: {
     color: '#333',
     marginTop: 10,
     borderColor: 'white',
-    borderWidth: '3',
+    borderWidth: 3,
     borderRadius: 25,
     backgroundColor: '#f5f5f5',
     padding: 5,

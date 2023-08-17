@@ -49,7 +49,7 @@ const MapScreen = () => {
   };
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c"
+      googleMapsApiKey="AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY"
       libraries={['geometry', 'drawing', 'places']}
     >
       <GoogleMap

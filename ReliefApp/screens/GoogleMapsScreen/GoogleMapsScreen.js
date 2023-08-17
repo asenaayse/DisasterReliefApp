@@ -12,7 +12,7 @@ const GoogleMapsScreen = ({ route }) => {
   useEffect(() => {
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD7cc54lrevO7ObNjdDovzlSuPqlP-JJ-c`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyBjGooTZ-oIqvByiGphFubfMcYNtYpksxY`
       )
       .then((response) => {
         const result = response.data.results[0].geometry.location;

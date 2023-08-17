@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions,Image } from 'react-native';
 import Form from './Form'
 import React, {useState} from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'; // https://icons.expo.fyi/ 
@@ -88,14 +88,16 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
 
 
       <TouchableOpacity
-        style = {styles.button}
-        onPress={() => {
-          setFormType('needs');
-          setIsModalVisible(true);
-        }}
-        
+          style={styles.button}
+          onPress={() => {
+            setFormType('needs');
+            setIsModalVisible(true);
+          }}
       >
-        <Text style = {styles.buttonText}>Make a Request</Text>
+          <View style={styles.buttonContent}>
+              <Image source={require('../../assets/HomeIcons/request_icon_white.png')} style={styles.buttonIcon} />
+              <Text style={styles.buttonText}>Make a Request</Text>
+          </View>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -105,8 +107,10 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
           setIsModalVisible(true);
         }}
       >
-        <Text style = {styles.buttonText}>Make a Donation</Text>
-
+        <View style={styles.buttonContent}>
+              <Image source={require('../../assets/HomeIcons/donation_list_icon_white.png')} style={styles.buttonIcon} />
+              <Text style={styles.buttonText}>Available Items</Text>
+          </View>
       </TouchableOpacity>
 
 
@@ -116,8 +120,10 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
             navigation.navigate('Requested Items');
     }}
     >
-    <Text style = {styles.buttonText}>Requested Items</Text>
-    </TouchableOpacity>
+<View style={styles.buttonContent}>
+              <Image source={require('../../assets/HomeIcons/request_list_icon_white.png')} style={styles.buttonIcon} />
+              <Text style={styles.buttonText}>Requested Items</Text>
+          </View>    </TouchableOpacity>
 
         <TouchableOpacity
             style = {styles.button}
@@ -125,8 +131,11 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
                 navigation.navigate('Available Items');
         }}
         >
-        <Text style = {styles.buttonText}>Available Items</Text>
-        </TouchableOpacity>
+<View style={styles.buttonContent}>
+              <Image source={require('../../assets/HomeIcons/donation_list_icon_white.png')} style={styles.buttonIcon} />
+              <Text style={styles.buttonText}>Available Items</Text>
+          </View>
+                  </TouchableOpacity>
 
         <TouchableOpacity
             style = {styles.button}
@@ -134,8 +143,11 @@ const HomeScreenUI = ({auth, clickSignOut, navigation}) => {
                 navigation.navigate('Distributor');
         }}
         >
-        <Text style = {styles.buttonText}>Volunteer Couriers</Text>
-        </TouchableOpacity>
+<View style={styles.buttonContent}>
+              <Image source={require('../../assets/HomeIcons/courier_icon_white.png')} style={styles.buttonIcon} />
+              <Text style={styles.buttonText}>Volunteer Courier</Text>
+          </View>
+                  </TouchableOpacity>
       
       
       <Modal
@@ -165,10 +177,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
+    
   },
   button: { 
     backgroundColor: '#f84242',
-    width: '60%',
+  //  width: '60%',
     padding: 15,
     borderRadius: 40,
     alignItems: 'center',
@@ -182,7 +195,7 @@ const styles = StyleSheet.create({
     elevation: 3, 
   },
   buttonText: {
-    color: 'black',
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
   },
@@ -233,7 +246,17 @@ subtitle: {
   marginTop: 5, 
   fontSize: 12, 
   color: '#f84242'
-}
+},
+buttonContent: {
+  flexDirection: 'row',  // To display child components in a row
+  alignItems: 'center',  // To vertically align children in the center
+  justifyContent: 'center',  // To horizontally align children in the center
+},
+buttonIcon: {
+  width: 35,   // Or any desired width
+  height: 35,  // Or any desired height
+ // marginRight: '3%',  // To add some spacing between the icon and the text
+},
 
 
 })

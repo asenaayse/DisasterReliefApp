@@ -101,7 +101,7 @@ const UserScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Completed Transports: {user?.completedTransports}</Text>
+      <Text style={styles.title}>Completed Transports {user?.completedTransports}</Text>
       <Text style={styles.subTitle}>In Progress:</Text>
       {inProgressTransports.length > 0 ? (
       <FlatList
@@ -134,7 +134,6 @@ const UserScreen = () => {
           <View style={styles.itemContainer}>
             <Text style={styles.itemTitle}>Transport ID: {item.id}</Text>
             <Text style={styles.itemDetail}>Status: {item.status}</Text>
-            <Text style={styles.itemDetail}>Status: {item.donationLocation}</Text>
 
           </View>
         )}
@@ -161,15 +160,15 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 15,
     marginVertical: 8,
-    borderRadius: 10,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 3,
-    width: '70%',
+    width: '80%',
     justifyContent: 'center', 
   },
   itemTitle: {
